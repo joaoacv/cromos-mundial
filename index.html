@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>⚽ Cromos do Mundial</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+/* ── RESET & BASE ─────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --green:  #2D6A2D;
+  --green2: #4CAF50;
+  --red:    #C0392B;
+  --gold:   #F4C430;
+  --bg:     #F5F2EB;
+  --card:   #FFFDF7;
+  --border: #DDD8CC;
+  --text:   #1A1A18;
+  --muted:  #7A7670;
+  --radius: 14px;
+  --shadow: 0 2px 12px rgba(0,0,0,0.07);
+}
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  font-size: 15px;
+}
+h1,h2,h3,.syne { font-family: 'Syne', sans-serif; }
+
+/* ── LAYOUT ───────────────────────────────────────────── */
+.app { max-width: 680px; margin: 0 auto; padding: 1.5rem 1rem 5rem; }
+header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 1.75rem;
+}
+.logo { display: flex; align-items: center; gap: 10px; }
+.logo-icon { font-size: 28px; }
+.logo-text { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 800; letter-spacing: -0.5px; line-height: 1.1; }
+.logo-sub  { font-size: 11px; color: var(--muted); font-weight: 400; letter-spacing: 0.04em; text-transform: uppercase; }
+#statusDot {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 11px; color: var(--muted);
+}
+.dot { width: 7px; height: 7px; border-radius: 50%; background: #aaa; flex-shrink:0; transition: background .3s; }
+.dot.on { background: var(--green2); }
+
+/* ── TABS ─────────────────────────────────────────────── */
+.tabs {
+  display: flex; gap: 3px; background: #E8E4DC;
+  border-radius: 12px; padding: 4px; margin-bottom: 1.5rem;
+}
+.tab {
+  flex: 1; padding: 9px 4px; border: none; background: transparent;
+  border-radius: 9px; cursor: pointer; font-family: 'DM Sans', sans-serif;
+  font-size: 12px; color: var(--muted); font-weight: 500; transition: all .15s;
+}
+.tab.active { background: var(--card); color: var(--text); font-weight: 600; box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
+.section { display: none; }
+.section.active { display: block; }
+
+/* ── CARDS ────────────────────────────────────────────── */
+.card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 1.1rem 1.25rem;
+  margin-bottom: 12px; box-shadow: var(--shadow);
+}
+.card-title {
+  font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700;
+  margin-bottom: 10px; color: var(--text);
+  display: flex; align-items: center; gap: 7px;
+}
+.hint { font-size: 11px; color: var(--muted); margin-bottom: 9px; }
+
+/* ── INPUTS ───────────────────────────────────────────── */
+input, select, button {
+  font-family: 'DM Sans', sans-serif; font-size: 14px;
+  border-radius: 9px; border: 1px solid var(--border);
+  outline: none; transition: border-color .15s, box-shadow .15s;
+}
+input, select { padding: 8px 11px; background: #FAFAF7; color: var(--text); }
+input:focus, select:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(45,106,45,.12); }
+button {
+  padding: 9px 16px; background: var(--green); color: #fff;
+  border: none; cursor: pointer; font-weight: 600; transition: background .15s, transform .1s;
+}
+button:hover { background: #235523; }
+button:active { transform: scale(.97); }
+button.secondary { background: var(--card); color: var(--text); border: 1px solid var(--border); font-weight: 500; }
+button.secondary:hover { background: var(--bg); }
+button.danger { background: var(--red); }
+button.danger:hover { background: #a02a1f; }
+.row { display: flex; gap: 6px; align-items: center; margin-bottom: 10px; }
+.pi { width: 62px; text-transform: uppercase; font-weight: 600; text-align: center; letter-spacing: .05em; }
+.ni { width: 54px; text-align: center; }
+.qi { width: 46px; text-align: center; }
+.sep { font-size: 14px; color: var(--muted); font-weight: 600; flex-shrink:0; }
+
+/* ── AVATAR ───────────────────────────────────────────── */
+.avatar {
+  border-radius: 50%; display: inline-flex; align-items: center;
+  justify-content: center; font-family: 'Syne', sans-serif;
+  font-weight: 800; flex-shrink: 0; letter-spacing: -.5px;
+}
+
+/* ── STATS ────────────────────────────────────────────── */
+.stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 6px; margin-top: 12px; }
+.stat { background: var(--bg); border-radius: 10px; padding: 8px 6px; text-align: center; }
+.stat-n { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 800; }
+.stat-l { font-size: 10px; color: var(--muted); margin-top: 2px; text-transform: uppercase; letter-spacing: .04em; }
+
+/* ── CROMO TAGS ───────────────────────────────────────── */
+.cromo-tag {
+  display: inline-flex; align-items: center; gap: 3px;
+  padding: 3px 8px; border-radius: 7px; font-size: 11px;
+  font-weight: 600; border: 1px solid; font-family: 'DM Sans', monospace;
+  white-space: nowrap;
+}
+.cn { background: #FDECEA; color: #922B21; border-color: #F1948A; }
+.cr { background: #EBF5EB; color: #1E8449; border-color: #82E0AA; }
+.qb {
+  display: inline-flex; align-items: center; justify-content: center;
+  background: rgba(0,0,0,.15); border-radius: 4px;
+  font-size: 9px; font-weight: 800; min-width: 15px; height: 15px;
+  padding: 0 3px; margin-left: 1px;
+}
+.rm {
+  cursor: pointer; background: none; border: none; color: inherit;
+  opacity: .5; padding: 0 0 0 2px; font-size: 13px; line-height: 1;
+  border-radius: 3px;
+}
+.rm:hover { opacity: 1; background: rgba(0,0,0,.1); }
+.grp { display: flex; flex-wrap: wrap; gap: 5px; align-items: center; margin-bottom: 5px; }
+.gpl { font-size: 10px; font-weight: 700; color: var(--muted); min-width: 30px; font-family: 'Syne', sans-serif; }
+
+/* ── TROCA CARDS ──────────────────────────────────────── */
+.tcard {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 1rem 1.25rem;
+  margin-bottom: 10px; box-shadow: var(--shadow);
+}
+.thead { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+.tbody { display: grid; grid-template-columns: 1fr 28px 1fr; gap: 8px; align-items: start; }
+.tcol-t { font-size: 10px; color: var(--muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: .06em; font-weight: 600; }
+.badge-m { background: #D5F0D5; color: #1E6E1E; border-radius: 99px; font-size: 11px; font-weight: 600; padding: 3px 10px; border: 1px solid #82E0AA; }
+.badge-p { background: #F9F0D8; color: #7D6008; border-radius: 99px; font-size: 11px; font-weight: 600; padding: 3px 10px; border: 1px solid #F4D03F; }
+
+/* ── FILTERS ──────────────────────────────────────────── */
+.frow { display: flex; gap: 6px; margin-bottom: 1rem; flex-wrap: wrap; }
+.fb {
+  font-size: 12px; padding: 5px 13px; border-radius: 99px;
+  border: 1px solid var(--border); background: var(--card);
+  cursor: pointer; color: var(--muted); font-family: 'DM Sans', sans-serif; font-weight: 500;
+}
+.fb.active { background: var(--green); color: #fff; border-color: var(--green); font-weight: 600; }
+
+/* ── LOGIN ────────────────────────────────────────────── */
+#loginScreen {
+  min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  background: var(--bg); padding: 1rem;
+}
+.login-box {
+  background: var(--card); border: 1px solid var(--border); border-radius: 20px;
+  padding: 2.5rem 2rem; max-width: 360px; width: 100%;
+  box-shadow: 0 8px 32px rgba(0,0,0,.1); text-align: center;
+}
+.login-box h2 { font-family: 'Syne', sans-serif; font-size: 24px; font-weight: 800; margin-bottom: 6px; }
+.login-box p  { font-size: 13px; color: var(--muted); margin-bottom: 1.5rem; line-height: 1.6; }
+.login-box input, .login-box select { width: 100%; margin-bottom: 10px; }
+.login-box button { width: 100%; }
+
+/* ── REGISTAR ─────────────────────────────────────────── */
+.reg-form { display: grid; grid-template-columns: 1fr 28px 1fr; gap: 8px; align-items: start; margin-bottom: 12px; }
+.rf-col { display: flex; flex-direction: column; gap: 5px; }
+.rf-col label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; font-weight: 700; }
+.rf-col select { width: 100%; }
+.log-entry {
+  border-left: 3px solid var(--green2); padding: 9px 12px; margin-bottom: 8px;
+  background: var(--bg); border-radius: 0 10px 10px 0;
+  font-size: 12px; color: var(--muted); line-height: 1.7;
+}
+.log-entry strong { color: var(--text); }
+.log-entry .mono { font-weight: 700; color: var(--green); font-family: monospace; font-size: 13px; }
+
+/* ── EMPTY & MISC ─────────────────────────────────────── */
+.empty { text-align: center; padding: 2.5rem 1rem; color: var(--muted); font-size: 14px; line-height: 1.8; }
+.empty span { font-size: 32px; display: block; margin-bottom: 8px; }
+.loading { text-align:center; padding: 3rem; color: var(--muted); }
+#toast {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
+  background: #1A1A18; color: #fff; padding: 10px 20px; border-radius: 99px;
+  font-size: 13px; font-weight: 500; transition: transform .3s; z-index: 999; pointer-events:none;
+}
+#toast.show { transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- ── LOGIN ──────────────────────────────────────────── -->
+<div id="loginScreen">
+  <div class="login-box">
+    <div style="font-size:48px;margin-bottom:12px;">⚽</div>
+    <h2>Cromos do Mundial</h2>
+    <p>A app do grupo para gerir cromos e encontrar trocas automaticamente.</p>
+    <div id="loginContent"><div class="loading">A ligar...</div></div>
+  </div>
+</div>
+
+<!-- ── APP ────────────────────────────────────────────── -->
+<div id="appScreen" style="display:none;">
+  <div class="app">
+    <header>
+      <div class="logo">
+        <div class="logo-icon">⚽</div>
+        <div>
+          <div class="logo-text">Cromos</div>
+          <div class="logo-sub">Mundial</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div id="statusDot"><div class="dot" id="dot"></div><span id="statusTxt">A ligar</span></div>
+        <div id="sessInfo"></div>
+      </div>
+    </header>
+
+    <div class="tabs">
+      <button class="tab active" id="tabBtn-grupo"    onclick="switchTab('grupo')">👥 Grupo</button>
+      <button class="tab"        id="tabBtn-colecao"  onclick="switchTab('colecao')">📋 Coleção</button>
+      <button class="tab"        id="tabBtn-trocas"   onclick="switchTab('trocas')">🔄 Trocas</button>
+      <button class="tab"        id="tabBtn-registar" onclick="switchTab('registar')">✅ Registar</button>
+    </div>
+
+    <div id="tab-grupo"    class="section active"></div>
+    <div id="tab-colecao"  class="section"></div>
+    <div id="tab-trocas"   class="section"></div>
+    <div id="tab-registar" class="section"></div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<!-- ══════════════════════════════════════════════════════
+  🔥 FIREBASE CONFIG — SUBSTITUI AQUI COM OS TEUS DADOS
+  (Passo 3 das instruções: copia o teu firebaseConfig aqui)
+════════════════════════════════════════════════════════ -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, doc, setDoc, deleteDoc, onSnapshot, collection } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+// 👇 SUBSTITUI ESTE BLOCO COM O TEU firebaseConfig DO FIREBASE
+const firebaseConfig = {
+  apiKey:            "AIzaSyDCB2L5C_YkNJ_MknirZ6lgMv6P7LQ4GCs",
+  authDomain:        "cromos-mundial-b3d6e.firebaseapp.com",
+  projectId:         "cromos-mundial-b3d6e",
+  storageBucket:     "cromos-mundial-b3d6e.firebasestorage.app",
+  messagingSenderId: "470911627452",
+  appId:             "1:470911627452:web:08995a2bf36a0ed78a20b9"
+};
+// 👆 FIM DA ZONA A SUBSTITUIR
+
+const app = initializeApp(firebaseConfig);
+const db  = getFirestore(app);
+
+// ── HELPERS ────────────────────────────────────────────
+const COLORS = [
+  {bg:'#D6E8F7',txt:'#0C447C',brd:'#85B7EB'},
+  {bg:'#E9E8FD',txt:'#3C3489',brd:'#AFA9EC'},
+  {bg:'#D5EFD5',txt:'#1E6E1E',brd:'#82E0AA'},
+  {bg:'#FDECD2',txt:'#7D4E00',brd:'#F4D03F'},
+  {bg:'#FAD9D9',txt:'#922B21',brd:'#F1948A'},
+  {bg:'#D9F0E8',txt:'#0E6655',brd:'#76D7C4'},
+  {bg:'#F9D9EF',txt:'#7D1C5A',brd:'#E58AC9'},
+];
+function uid(){ return '_'+Math.random().toString(36).slice(2,10); }
+function initials(n){ return (n||'?').trim().split(/\s+/).map(w=>w[0]).join('').toUpperCase().slice(0,2)||'?'; }
+function avS(ci,sz){
+  const c=COLORS[((ci||0)+COLORS.length)%COLORS.length];
+  return `width:${sz}px;height:${sz}px;min-width:${sz}px;font-size:${sz>=38?14:12}px;background:${c.bg};color:${c.txt};border:1px solid ${c.brd};border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;flex-shrink:0;`;
+}
+function parseCromo(p,n){
+  const pg=(p||'').trim().toUpperCase().replace(/[^A-Z]/g,'');
+  const nm=parseInt(n);
+  if(!pg||isNaN(nm)||nm<1) return null;
+  return `${pg} ${nm}`;
+}
+function cPage(k){ return (k||'').split(' ')[0]; }
+function cNum(k){ return parseInt((k||'').split(' ')[1])||0; }
+function cmp(a,b){ const pa=cPage(a),pb=cPage(b); return pa!==pb?pa.localeCompare(pb):cNum(a)-cNum(b); }
+
+function repCount(u,k){ return (u.rep&&u.rep[k])||0; }
+function needList(u){ return u.need||[]; }
+function totalRep(u){ return Object.values(u.rep||{}).reduce((s,v)=>s+v,0); }
+function totalUniqRep(u){ return Object.keys(u.rep||{}).filter(k=>u.rep[k]>0).length; }
+
+let state = { users:[], log:[], currentUserId:null, trocaFilter:'todas', tab:'grupo' };
+function me(){ return state.users.find(u=>u.id===state.currentUserId); }
+function getUser(id){ return state.users.find(u=>u.id===id); }
+
+// ── TOAST ──────────────────────────────────────────────
+let toastTimer;
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),2000);
+}
+
+// ── STATUS ─────────────────────────────────────────────
+function setStatus(online, msg){
+  document.getElementById('dot').className='dot'+(online?' on':'');
+  document.getElementById('statusTxt').textContent=msg;
+}
+
+// ── FIREBASE LISTENER ──────────────────────────────────
+function startListening(){
+  // Listen to users
+  onSnapshot(collection(db,'users'), snap=>{
+    snap.docChanges().forEach(change=>{
+      const d=change.doc.data();
+      if(change.type==='removed'){
+        state.users=state.users.filter(u=>u.id!==d.id);
+      } else {
+        const idx=state.users.findIndex(u=>u.id===d.id);
+        if(idx>=0) state.users[idx]=d; else state.users.push(d);
+      }
+    });
+    state.users.sort((a,b)=>a.created-b.created);
+    setStatus(true, `Ligado · ${state.users.length} membro(s)`);
+    renderGrupo(); renderTrocas();
+    if(state.tab==='registar') renderRegistar();
+    if(state.tab==='colecao')  renderColecao();
+  });
+  // Listen to log
+  onSnapshot(collection(db,'log'), snap=>{
+    snap.docChanges().forEach(change=>{
+      const d=change.doc.data();
+      if(change.type==='removed'){
+        state.log=state.log.filter(e=>e.id!==d.id);
+      } else {
+        const idx=state.log.findIndex(e=>e.id===d.id);
+        if(idx>=0) state.log[idx]=d; else state.log.push(d);
+      }
+    });
+    state.log.sort((a,b)=>b.ts-a.ts);
+    if(state.tab==='registar') renderRegistar();
+  });
+}
+
+async function saveUser(u){ await setDoc(doc(db,'users',u.id), u); }
+async function delUser(id){ await deleteDoc(doc(db,'users',id)); }
+async function saveLog(entry){ await setDoc(doc(db,'log',entry.id), entry); }
+
+// ── LOGIN ──────────────────────────────────────────────
+async function boot(){
+  // try to remember who the user is in sessionStorage
+  const saved = sessionStorage.getItem('cromos_uid');
+  if(saved){ state.currentUserId=saved; }
+
+  // start real-time listener first so users load
+  startListening();
+
+  // small delay then show login
+  setTimeout(()=>{
+    renderLogin();
+  }, 800);
+}
+
+function renderLogin(){
+  const area=document.getElementById('loginContent');
+  const opts=state.users.map(u=>`<option value="${u.id}">${u.name}</option>`).join('');
+
+  // If we remembered the user and they exist, auto-enter
+  if(state.currentUserId && state.users.find(u=>u.id===state.currentUserId)){
+    enterApp(); return;
+  }
+
+  if(!state.users.length){
+    area.innerHTML=`
+      <input type="text" id="firstName" placeholder="O teu nome" style="width:100%;margin-bottom:10px;"/>
+      <button id="btnCreate">Criar grupo e entrar →</button>`;
+    document.getElementById('btnCreate').addEventListener('click', createAndJoin);
+    document.getElementById('firstName').addEventListener('keydown', e=>{ if(e.key==='Enter') createAndJoin(); });
+  } else {
+    area.innerHTML=`
+      <select id="loginSel" style="width:100%;margin-bottom:10px;">
+        <option value="">— Seleciona o teu nome —</option>
+        ${opts}
+        <option value="__new__">+ Sou novo, adicionar-me</option>
+      </select>
+      <div id="newNameRow" style="display:none;margin-bottom:10px;">
+        <input type="text" id="newLoginName" placeholder="O teu nome" style="width:100%;"/>
+      </div>
+      <button id="btnLogin">Entrar →</button>`;
+    document.getElementById('loginSel').addEventListener('change',function(){
+      document.getElementById('newNameRow').style.display=this.value==='__new__'?'block':'none';
+    });
+    document.getElementById('btnLogin').addEventListener('click', doLogin);
+  }
+}
+
+async function createAndJoin(){
+  const name=(document.getElementById('firstName').value||'').trim();
+  if(!name){ document.getElementById('firstName').focus(); return; }
+  const user={id:uid(),name,color:0,need:[],rep:{},created:Date.now()};
+  await saveUser(user);
+  state.currentUserId=user.id;
+  sessionStorage.setItem('cromos_uid', user.id);
+  enterApp();
+}
+async function doLogin(){
+  const sel=document.getElementById('loginSel').value;
+  if(!sel) return;
+  if(sel==='__new__'){
+    const name=(document.getElementById('newLoginName').value||'').trim();
+    if(!name){ document.getElementById('newLoginName').focus(); return; }
+    const user={id:uid(),name,color:state.users.length,need:[],rep:{},created:Date.now()};
+    await saveUser(user);
+    state.currentUserId=user.id;
+    sessionStorage.setItem('cromos_uid', user.id);
+  } else {
+    state.currentUserId=sel;
+    sessionStorage.setItem('cromos_uid', sel);
+  }
+  enterApp();
+}
+function enterApp(){
+  document.getElementById('loginScreen').style.display='none';
+  document.getElementById('appScreen').style.display='block';
+  const u=me();
+  if(!u) return;
+  document.getElementById('sessInfo').innerHTML=`
+    <div style="display:flex;align-items:center;gap:8px;">
+      <div style="${avS(u.color,32)}">${initials(u.name)}</div>
+      <span style="font-size:13px;color:var(--muted);">${u.name}</span>
+      <button class="secondary" onclick="logout()" style="font-size:11px;padding:4px 10px;">Sair</button>
+    </div>`;
+  renderGrupo(); renderColecao(); renderTrocas(); renderRegistar();
+}
+function logout(){
+  state.currentUserId=null;
+  sessionStorage.removeItem('cromos_uid');
+  document.getElementById('loginScreen').style.display='flex';
+  document.getElementById('appScreen').style.display='none';
+  renderLogin();
+}
+window.logout=logout;
+
+// ── TABS ───────────────────────────────────────────────
+function switchTab(tab){
+  state.tab=tab;
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+tab).classList.add('active');
+  document.getElementById('tabBtn-'+tab).classList.add('active');
+  if(tab==='colecao')  renderColecao();
+  if(tab==='trocas')   renderTrocas();
+  if(tab==='registar') renderRegistar();
+}
+window.switchTab=switchTab;
+
+// ── HELPERS UI ─────────────────────────────────────────
+function groupedTags(keys, cls, removeType){
+  if(!keys.length) return '<span style="font-size:12px;color:var(--muted);">Ainda vazio</span>';
+  const pages={};
+  keys.sort(cmp).forEach(k=>{ const p=cPage(k); if(!pages[p])pages[p]=[]; pages[p].push(k); });
+  const u=me();
+  return Object.keys(pages).sort().map(pg=>`<div class="grp">
+    <span class="gpl">${pg}</span>
+    ${pages[pg].map(k=>{
+      const qb=cls==='cr'?`<span class="qb">×${repCount(u,k)}</span>`:'';
+      return `<span class="cromo-tag ${cls}">${k}${qb}${removeType?`<button class="rm" data-t="${removeType}" data-k="${k}">×</button>`:''}`;
+    }).join('')}
+  </div>`).join('');
+}
+
+function countTrocas(uid){
+  const u=getUser(uid); if(!u) return 0;
+  const myR=Object.keys(u.rep||{}).filter(k=>u.rep[k]>0);
+  return state.users.filter(o=>{
+    if(o.id===uid) return false;
+    return myR.some(k=>needList(o).includes(k))||needList(u).some(k=>repCount(o,k)>0);
+  }).length;
+}
+
+// ── GRUPO ──────────────────────────────────────────────
+function renderGrupo(){
+  const el=document.getElementById('tab-grupo'); if(!el) return;
+  if(!state.users.length){ el.innerHTML='<div class="empty"><span>👥</span>Ainda ninguém no grupo.</div>'; return; }
+  el.innerHTML=state.users.map(u=>{
+    const isMe=u.id===state.currentUserId;
+    return `<div class="card" style="${isMe?'border-color:var(--green2);border-width:2px;':''}">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div style="${avS(u.color,44)}">${initials(u.name)}</div>
+        <div style="flex:1;">
+          <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:15px;">${u.name}${isMe?' <span style="font-size:11px;color:var(--green);font-weight:400;">(tu)</span>':''}</div>
+          <div style="font-size:12px;color:var(--muted);">Colecionador</div>
+        </div>
+        ${isMe?`<button class="danger" onclick="confirmRemoveMe()" style="font-size:12px;padding:6px 10px;" title="Sair do grupo">🗑</button>`:''}
+      </div>
+      <div class="stats">
+        <div class="stat"><div class="stat-n" style="color:var(--red);">${needList(u).length}</div><div class="stat-l">Precisam</div></div>
+        <div class="stat"><div class="stat-n" style="color:var(--green);">${totalUniqRep(u)}</div><div class="stat-l">Rep. únicos</div></div>
+        <div class="stat"><div class="stat-n" style="color:var(--green);">${totalRep(u)}</div><div class="stat-l">Rep. total</div></div>
+        <div class="stat"><div class="stat-n">${countTrocas(u.id)}</div><div class="stat-l">Trocas</div></div>
+      </div>
+    </div>`;
+  }).join('')+`<div style="font-size:11px;color:var(--muted);text-align:center;margin-top:4px;">🔄 Atualiza em tempo real</div>`;
+}
+window.confirmRemoveMe=async function(){
+  if(!confirm('Apagar os teus dados do grupo?')) return;
+  await delUser(state.currentUserId);
+  logout();
+};
+
+// ── COLEÇÃO ────────────────────────────────────────────
+function renderColecao(){
+  const el=document.getElementById('tab-colecao'); if(!el) return;
+  const u=me(); if(!u){ el.innerHTML=''; return; }
+  const needKeys=needList(u).slice().sort(cmp);
+  const repKeys=Object.keys(u.rep||{}).filter(k=>u.rep[k]>0).sort(cmp);
+  el.innerHTML=`
+    <div class="card" style="margin-bottom:12px;">
+      <div class="card-title">🔴 Preciso destes cromos</div>
+      <div class="hint">Iniciais da página · número do cromo</div>
+      <div class="row">
+        <input type="text" id="nPage" placeholder="ABC" class="pi" maxlength="5" oninput="this.value=this.value.toUpperCase()"/>
+        <span class="sep">·</span>
+        <input type="number" id="nNum" placeholder="12" class="ni" min="1" max="999"/>
+        <button id="btnAN" style="flex:1;">Adicionar</button>
+      </div>
+      <div id="needGrid">${groupedTags(needKeys,'cn','need')}</div>
+    </div>
+    <div class="card">
+      <div class="card-title">🟢 Tenho repetidos</div>
+      <div class="hint">Iniciais · número · quantidade (×) — podes ter vários do mesmo!</div>
+      <div class="row">
+        <input type="text" id="rPage" placeholder="ABC" class="pi" maxlength="5" oninput="this.value=this.value.toUpperCase()"/>
+        <span class="sep">·</span>
+        <input type="number" id="rNum" placeholder="12" class="ni" min="1" max="999"/>
+        <span class="sep">×</span>
+        <input type="number" id="rQty" value="1" class="qi" min="1" max="99"/>
+        <button id="btnAR" style="flex:1;">Adicionar</button>
+      </div>
+      <div id="repGrid">${groupedTags(repKeys,'cr','rep')}</div>
+    </div>`;
+
+  document.getElementById('btnAN').addEventListener('click', addNeed);
+  document.getElementById('btnAR').addEventListener('click', addRep);
+  el.querySelectorAll('.rm[data-t]').forEach(b=>b.addEventListener('click',()=>{
+    if(b.dataset.t==='need') removeNeed(b.dataset.k); else removeRep(b.dataset.k);
+  }));
+  const nk = e=>{ if(e.key==='Enter') addNeed(); if(e.key==='Tab'){e.preventDefault();document.getElementById('nNum').focus();} };
+  const rk = e=>{ if(e.key==='Enter') addRep();  if(e.key==='Tab'){e.preventDefault();document.getElementById('rNum').focus();} };
+  const rk2= e=>{ if(e.key==='Enter') addRep();  if(e.key==='Tab'){e.preventDefault();document.getElementById('rQty').focus();} };
+  document.getElementById('nPage').addEventListener('keydown',nk);
+  document.getElementById('nNum').addEventListener('keydown', e=>{ if(e.key==='Enter') addNeed(); });
+  document.getElementById('rPage').addEventListener('keydown',rk);
+  document.getElementById('rNum').addEventListener('keydown',rk2);
+  document.getElementById('rQty').addEventListener('keydown', e=>{ if(e.key==='Enter') addRep(); });
+}
+
+async function addNeed(){
+  const key=parseCromo(document.getElementById('nPage').value, document.getElementById('nNum').value);
+  if(!key) return;
+  const u=me(); if(!u.need.includes(key)) u.need.push(key);
+  await saveUser(u); toast('✓ Guardado');
+  document.getElementById('nPage').value=''; document.getElementById('nNum').value='';
+  document.getElementById('nPage').focus();
+}
+async function removeNeed(key){ const u=me(); u.need=u.need.filter(k=>k!==key); await saveUser(u); }
+async function addRep(){
+  const key=parseCromo(document.getElementById('rPage').value, document.getElementById('rNum').value);
+  const qty=parseInt(document.getElementById('rQty').value)||1;
+  if(!key) return;
+  const u=me(); if(!u.rep)u.rep={};
+  u.rep[key]=(u.rep[key]||0)+qty;
+  await saveUser(u); toast('✓ Guardado');
+  document.getElementById('rPage').value=''; document.getElementById('rNum').value=''; document.getElementById('rQty').value='1';
+  document.getElementById('rPage').focus();
+}
+async function removeRep(key){ const u=me(); delete u.rep[key]; await saveUser(u); }
+
+// ── TROCAS ─────────────────────────────────────────────
+function renderTrocas(){
+  const el=document.getElementById('tab-trocas'); if(!el) return;
+  const fr=`<div class="frow" id="filterRow">
+    <button class="fb ${state.trocaFilter==='todas'?'active':''}" data-f="todas">Todas</button>
+    ${state.users.map(u=>`<button class="fb ${state.trocaFilter===u.id?'active':''}" data-f="${u.id}">${u.name}</button>`).join('')}
+  </div>`;
+  let pairs=[];
+  for(let i=0;i<state.users.length;i++){
+    for(let j=i+1;j<state.users.length;j++){
+      const a=state.users[i],b=state.users[j];
+      const ag=Object.keys(a.rep||{}).filter(k=>(a.rep[k]||0)>0&&needList(b).includes(k));
+      const bg=Object.keys(b.rep||{}).filter(k=>(b.rep[k]||0)>0&&needList(a).includes(k));
+      if(ag.length||bg.length) pairs.push({a,b,ag,bg});
+    }
+  }
+  if(state.trocaFilter!=='todas') pairs=pairs.filter(p=>p.a.id===state.trocaFilter||p.b.id===state.trocaFilter);
+  const body=pairs.length===0
+    ? `<div class="empty"><span>${state.users.length<2?'👥':'🤝'}</span>${state.users.length<2?'Adiciona pelo menos 2 membros.':'Ainda não há trocas possíveis.'}</div>`
+    : pairs.map(({a,b,ag,bg})=>{
+        const mutual=ag.length>0&&bg.length>0;
+        const tl=(list,u)=>list.length
+          ? list.sort(cmp).map(k=>`<span class="cromo-tag cr">${k}<span class="qb">×${repCount(u,k)}</span></span>`).join('')
+          : '<span style="font-size:12px;color:var(--muted);">—</span>';
+        return `<div class="tcard">
+          <div class="thead">
+            <div style="${avS(a.color,34)}">${initials(a.name)}</div>
+            <span style="font-family:'Syne',sans-serif;font-weight:700;font-size:14px;">${a.name}</span>
+            <span style="color:var(--muted);font-size:18px;">⇄</span>
+            <div style="${avS(b.color,34)}">${initials(b.name)}</div>
+            <span style="font-family:'Syne',sans-serif;font-weight:700;font-size:14px;">${b.name}</span>
+            ${mutual?`<span class="badge-m" style="margin-left:auto;">✓ Mútua</span>`:`<span class="badge-p" style="margin-left:auto;">Parcial</span>`}
+          </div>
+          <div class="tbody">
+            <div><div class="tcol-t">${a.name} pode dar</div><div style="display:flex;flex-wrap:wrap;gap:5px;">${tl(ag,a)}</div></div>
+            <div style="text-align:center;padding-top:14px;color:var(--muted);font-size:18px;">⇄</div>
+            <div><div class="tcol-t">${b.name} pode dar</div><div style="display:flex;flex-wrap:wrap;gap:5px;">${tl(bg,b)}</div></div>
+          </div>
+        </div>`;
+      }).join('');
+  el.innerHTML=fr+body;
+  el.querySelectorAll('.fb[data-f]').forEach(b=>b.addEventListener('click',()=>{
+    state.trocaFilter=b.dataset.f; renderTrocas();
+  }));
+}
+
+// ── REGISTAR ───────────────────────────────────────────
+function renderRegistar(){
+  const el=document.getElementById('tab-registar'); if(!el) return;
+  const u=me(); if(!u) return;
+  const others=state.users.filter(o=>o.id!==state.currentUserId);
+  const logHTML=state.log.length===0
+    ? '<div class="empty" style="padding:1rem;"><span>📜</span>Ainda não há trocas registadas.</div>'
+    : state.log.slice(0,30).map(t=>`<div class="log-entry">
+        <strong>${t.aN}</strong> deu <span class="mono">${t.ag}</span>
+        &nbsp;⇄&nbsp;
+        <strong>${t.bN}</strong> deu <span class="mono">${t.bg}</span>
+        <div style="margin-top:2px;font-size:11px;">${new Date(t.ts).toLocaleString('pt-PT')}</div>
+      </div>`).join('');
+  const formHTML=!others.length
+    ? '<div style="font-size:13px;color:var(--muted);">Ainda não há outros membros no grupo.</div>'
+    : `<div class="card" style="background:var(--bg);box-shadow:none;margin-bottom:10px;">
+        <div class="card-title" style="margin-bottom:8px;">Com quem trocaste?</div>
+        <select id="tPartner" style="width:100%;">
+          <option value="">— Seleciona o parceiro —</option>
+          ${others.map(o=>`<option value="${o.id}">${o.name}</option>`).join('')}
+        </select>
+      </div>
+      <div class="reg-form">
+        <div class="rf-col">
+          <label>Tu deste (repetido teu)</label>
+          <select id="tIGive"><option value="">— seleciona parceiro primeiro —</option></select>
+        </div>
+        <div style="text-align:center;padding-top:22px;color:var(--muted);font-size:20px;">⇄</div>
+        <div class="rf-col">
+          <label>Tu recebeste</label>
+          <select id="tIGet"><option value="">— seleciona parceiro primeiro —</option></select>
+        </div>
+      </div>
+      <button id="btnConfirm" style="width:100%;">✅ Confirmar troca e atualizar cadernetas</button>`;
+  el.innerHTML=`
+    <div class="card" style="margin-bottom:12px;">
+      <div class="card-title">✅ Registar troca efectuada</div>
+      <div class="hint">Ao confirmar, as cadernetas de ambos atualizam automaticamente.</div>
+      ${formHTML}
+    </div>
+    <div class="card">
+      <div class="card-title">📜 Histórico</div>
+      ${logHTML}
+    </div>`;
+  if(others.length){
+    document.getElementById('tPartner').addEventListener('change', updateTrocaSelects);
+    document.getElementById('btnConfirm').addEventListener('click', registarTroca);
+  }
+}
+
+function updateTrocaSelects(){
+  const pid=document.getElementById('tPartner').value;
+  const partner=getUser(pid); const u=me();
+  const gs=document.getElementById('tIGive'); const gt=document.getElementById('tIGet');
+  if(!partner){ gs.innerHTML='<option value="">—</option>'; gt.innerHTML='<option value="">—</option>'; return; }
+  const cg=Object.keys(u.rep||{}).filter(k=>(u.rep[k]||0)>0&&needList(partner).includes(k)).sort(cmp);
+  const cr=Object.keys(partner.rep||{}).filter(k=>(partner.rep[k]||0)>0&&needList(u).includes(k)).sort(cmp);
+  gs.innerHTML='<option value="">— Seleciona —</option>'+cg.map(k=>`<option value="${k}">${k}  (tens ×${u.rep[k]})</option>`).join('');
+  gt.innerHTML='<option value="">— Seleciona —</option>'+cr.map(k=>`<option value="${k}">${k}  (ele/ela tem ×${partner.rep[k]})</option>`).join('');
+}
+
+async function registarTroca(){
+  const pid=document.getElementById('tPartner').value;
+  const ig=document.getElementById('tIGive').value;
+  const ir=document.getElementById('tIGet').value;
+  if(!pid||!ig||!ir){ alert('Preenche todos os campos!'); return; }
+  const u=me(); const partner=getUser(pid);
+  // me
+  u.rep[ig]=(u.rep[ig]||1)-1; if(u.rep[ig]<=0) delete u.rep[ig];
+  u.need=u.need.filter(k=>k!==ir);
+  // partner
+  if(!partner.rep)partner.rep={};
+  partner.rep[ir]=(partner.rep[ir]||1)-1; if(partner.rep[ir]<=0) delete partner.rep[ir];
+  partner.need=partner.need.filter(k=>k!==ig);
+  const entry={id:uid(),ts:Date.now(),aN:u.name,ag:ig,bN:partner.name,bg:ir};
+  await Promise.all([saveUser(u), saveUser(partner), saveLog(entry)]);
+  toast('✅ Troca registada!');
+}
+
+boot();
+</script>
+</body>
+</html>

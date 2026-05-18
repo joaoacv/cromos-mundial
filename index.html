@@ -7,135 +7,55 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-:root{
-  --bg:#0F0F0F;
-  --surface:#1A1A1A;
-  --surface2:#222222;
-  --surface3:#2A2A2A;
-  --border:#333;
-  --text:#FFFFFF;
-  --muted:#888;
-  --muted2:#555;
-  --green:#4CAF50;
-  --green-dim:#1a3d1a;
-  --gold:#F4C430;
-  --gold-dim:#3d2e00;
-  --red:#E53935;
-  --accent:#F4C430;
-  --radius:16px;
-}
+:root{--bg:#0F0F0F;--surface:#1A1A1A;--surface2:#222;--surface3:#2A2A2A;--border:#333;--text:#FFF;--muted:#888;--muted2:#555;--green:#4CAF50;--green-dim:#1a3d1a;--gold:#F4C430;--gold-dim:#3d2e00;--red:#E53935;--radius:16px;}
 html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-size:14px;overflow:hidden;}
-
-/* ══ LOGIN ══════════════════════════════════════════ */
-#loginScreen{
-  position:fixed;inset:0;background:var(--bg);
-  display:flex;align-items:center;justify-content:center;
-  z-index:200;padding:1rem;
-}
-.lbox{
-  background:var(--surface);border:1px solid var(--border);border-radius:24px;
-  padding:2.5rem 2rem;max-width:360px;width:100%;text-align:center;
-}
-.lbox .ball{font-size:52px;margin-bottom:16px;display:block;}
+#loginScreen{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:200;padding:1rem;}
+.lbox{background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:2.5rem 2rem;max-width:360px;width:100%;text-align:center;}
 .lbox h2{font-size:22px;font-weight:900;margin-bottom:6px;letter-spacing:-.5px;}
 .lbox p{font-size:13px;color:var(--muted);margin-bottom:1.5rem;line-height:1.6;}
-.lbox input,.lbox select{
-  width:100%;margin-bottom:10px;padding:12px 14px;
-  border:1px solid var(--border);border-radius:12px;
-  background:var(--surface2);color:var(--text);
-  font-family:'Inter',sans-serif;font-size:14px;
-}
+.lbox input,.lbox select{width:100%;margin-bottom:10px;padding:12px 14px;border:1px solid var(--border);border-radius:12px;background:var(--surface2);color:var(--text);font-family:'Inter',sans-serif;font-size:14px;}
 .lbox input::placeholder{color:var(--muted);}
 .lbox select option{background:var(--surface2);}
-.lbox button{
-  width:100%;padding:13px;background:var(--gold);color:#000;
-  border:none;border-radius:12px;font-family:'Inter',sans-serif;
-  font-weight:800;font-size:15px;cursor:pointer;transition:opacity .15s;
-}
+.lbox button{width:100%;padding:13px;background:var(--gold);color:#000;border:none;border-radius:12px;font-family:'Inter',sans-serif;font-weight:800;font-size:15px;cursor:pointer;transition:opacity .15s;}
 .lbox button:hover{opacity:.88;}
-
-/* ══ APP SHELL ══════════════════════════════════════ */
 #appScreen{display:none;height:100%;flex-direction:column;}
 #appScreen.show{display:flex;}
-
-/* TOP BAR */
-.topbar{
-  background:var(--surface);border-bottom:1px solid var(--border);
-  padding:14px 16px;display:flex;align-items:center;justify-content:space-between;
-  flex-shrink:0;
-}
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
 .topbar-title{font-size:18px;font-weight:900;letter-spacing:-.5px;}
 .topbar-right{display:flex;align-items:center;gap:12px;}
-.topbar-user{display:flex;align-items:center;gap:8px;}
-.user-avatar{
-  width:32px;height:32px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  font-weight:800;font-size:12px;flex-shrink:0;
-}
-.topbar-status{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:5px;}
 .dot{width:6px;height:6px;border-radius:50%;background:var(--muted2);}
 .dot.on{background:var(--green);}
 .btn-sm{padding:6px 14px;border:1px solid var(--border);border-radius:8px;background:transparent;color:var(--muted);font-family:'Inter',sans-serif;font-size:12px;cursor:pointer;}
 .btn-sm:hover{background:var(--surface2);color:var(--text);}
-
-/* BODY */
 .app-body{flex:1;display:flex;overflow:hidden;}
-
-/* SIDE NAV */
-.sidenav{
-  width:64px;background:var(--surface);border-right:1px solid var(--border);
-  display:flex;flex-direction:column;align-items:center;padding:12px 0;gap:4px;
-  flex-shrink:0;
-}
-.snav{
-  width:48px;height:48px;border-radius:12px;border:none;background:transparent;
-  cursor:pointer;display:flex;flex-direction:column;align-items:center;
-  justify-content:center;gap:3px;color:var(--muted);font-size:10px;
-  font-family:'Inter',sans-serif;font-weight:500;transition:all .15s;
-}
+.sidenav{width:64px;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;align-items:center;padding:12px 0;gap:4px;flex-shrink:0;}
+.snav{width:48px;height:48px;border-radius:12px;border:none;background:transparent;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:var(--muted);font-size:10px;font-family:'Inter',sans-serif;font-weight:500;transition:all .15s;}
 .snav .ico{font-size:20px;line-height:1;}
 .snav:hover{background:var(--surface2);color:var(--text);}
 .snav.active{background:var(--surface3);color:var(--gold);}
-
-/* MAIN CONTENT */
 .main{flex:1;overflow-y:auto;overflow-x:hidden;}
-.section{display:none;height:100%;}
+.section{display:none;}
 .section.active{display:block;}
-
-/* ══ COLEÇÃO ════════════════════════════════════════ */
-.col-header{
-  background:var(--surface);border-bottom:1px solid var(--border);
-  padding:14px 16px;position:sticky;top:0;z-index:10;
-}
+.col-header{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 16px;position:sticky;top:0;z-index:10;}
 .col-header-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
 .col-title{font-size:17px;font-weight:800;}
 .col-pct{font-size:22px;font-weight:900;color:var(--gold);}
 .col-pct-sub{font-size:11px;color:var(--muted);text-align:right;}
 .global-bar{height:4px;background:var(--surface3);border-radius:2px;overflow:hidden;margin-bottom:10px;}
 .global-fill{height:100%;background:var(--gold);border-radius:2px;transition:width .4s;}
-.col-filters{display:flex;gap:8px;align-items:center;}
-.col-search{
-  flex:1;padding:8px 12px;background:var(--surface2);border:1px solid var(--border);
-  border-radius:10px;color:var(--text);font-family:'Inter',sans-serif;font-size:13px;
-}
+.col-search{width:100%;padding:8px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:'Inter',sans-serif;font-size:13px;}
 .col-search::placeholder{color:var(--muted);}
-.legend-row{display:flex;gap:14px;padding:8px 16px 0;flex-wrap:wrap;}
+.legend-row{display:flex;gap:14px;padding:8px 16px 0;flex-wrap:wrap;align-items:center;}
 .leg{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted);}
 .leg-chip{width:26px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;}
 .leg-chip.empty{background:var(--surface2);border:1px solid var(--border);color:var(--muted2);}
 .leg-chip.have{background:var(--green-dim);border:1px solid var(--green);color:var(--green);}
 .leg-chip.rep{background:var(--gold-dim);border:1px solid var(--gold);color:var(--gold);}
-
-/* TEAM SECTION */
 .album-content{padding:8px 12px 80px;}
 .team-block{margin-bottom:8px;}
-.team-label{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:10px 4px 6px;cursor:pointer;
-}
-.team-label-left{display:flex;align-items:center;gap:8px;}
-.team-code{font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;}
-.team-name-full{font-size:12px;color:var(--muted2);}
+.team-label{display:flex;align-items:center;justify-content:space-between;padding:10px 4px 6px;cursor:pointer;user-select:none;}
+.team-code{font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.08em;}
+.team-name-full{font-size:12px;color:var(--muted2);margin-left:8px;}
 .team-right{display:flex;align-items:center;gap:8px;}
 .team-prog-bar{width:60px;height:3px;background:var(--surface3);border-radius:2px;overflow:hidden;}
 .team-prog-fill{height:100%;background:var(--green);border-radius:2px;transition:width .3s;}
@@ -144,16 +64,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Inter'
 .team-tog.open{transform:rotate(180deg);}
 .team-grid{display:none;grid-template-columns:repeat(auto-fill,minmax(68px,1fr));gap:6px;padding-bottom:6px;}
 .team-grid.open{display:grid;}
-
-/* STICKER CHIP */
-.chip{
-  aspect-ratio:1;border-radius:14px;
-  background:var(--surface2);border:1px solid var(--border);
-  display:flex;align-items:center;justify-content:center;flex-direction:column;
-  cursor:pointer;position:relative;user-select:none;
-  transition:transform .1s, background .1s, border-color .1s;
-  -webkit-tap-highlight-color:transparent;
-}
+.chip{aspect-ratio:1;border-radius:14px;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-direction:column;cursor:pointer;position:relative;user-select:none;transition:transform .1s,background .1s,border-color .1s;-webkit-tap-highlight-color:transparent;}
 .chip-num{font-size:18px;font-weight:900;color:var(--muted);line-height:1;}
 .chip-code{font-size:9px;font-weight:600;color:var(--muted2);margin-top:2px;letter-spacing:.04em;}
 .chip:active{transform:scale(.9);}
@@ -163,20 +74,9 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Inter'
 .chip.rep{background:var(--gold-dim);border-color:var(--gold);}
 .chip.rep .chip-num{color:var(--gold);}
 .chip.rep .chip-code{color:var(--gold);opacity:.7;}
-.chip .rep-badge{
-  position:absolute;top:-5px;right:-5px;
-  background:var(--gold);color:#000;border-radius:50%;
-  width:18px;height:18px;font-size:9px;font-weight:900;
-  display:flex;align-items:center;justify-content:center;
-  border:2px solid var(--bg);
-}
-
-/* ══ GRUPO ══════════════════════════════════════════ */
+.chip .rep-badge{position:absolute;top:-5px;right:-5px;background:var(--gold);color:#000;border-radius:50%;width:18px;height:18px;font-size:9px;font-weight:900;display:flex;align-items:center;justify-content:center;border:2px solid var(--bg);}
 .pad{padding:16px;}
-.gcard{
-  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
-  padding:16px;margin-bottom:10px;
-}
+.gcard{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:10px;}
 .gcard.me{border-color:var(--gold);}
 .gcard-top{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
 .gcard-name{font-weight:800;font-size:16px;}
@@ -185,8 +85,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Inter'
 .gstat{background:var(--surface2);border-radius:10px;padding:10px 6px;text-align:center;}
 .gstat-n{font-size:20px;font-weight:900;}
 .gstat-l{font-size:10px;color:var(--muted);margin-top:2px;text-transform:uppercase;letter-spacing:.05em;}
-
-/* ══ TROCAS ═════════════════════════════════════════ */
+.me-tag{font-size:11px;color:var(--gold);font-weight:600;margin-left:4px;}
 .frow{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;}
 .fb{padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:transparent;cursor:pointer;font-family:'Inter',sans-serif;font-size:12px;color:var(--muted);font-weight:500;}
 .fb.active{background:var(--gold);color:#000;border-color:var(--gold);font-weight:700;}
@@ -199,8 +98,6 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Inter'
 .badge-p{background:rgba(244,196,48,.15);color:var(--gold);border-radius:99px;font-size:11px;font-weight:700;padding:3px 10px;border:1px solid rgba(244,196,48,.3);}
 .ctag{display:inline-flex;align-items:center;gap:3px;padding:3px 7px;border-radius:6px;font-size:10px;font-weight:700;background:var(--green-dim);border:1px solid rgba(76,175,80,.4);color:var(--green);white-space:nowrap;margin:2px 2px 2px 0;font-family:'Inter',monospace;}
 .ctag .qb{background:rgba(76,175,80,.3);border-radius:3px;font-size:8px;padding:0 3px;height:13px;display:inline-flex;align-items:center;}
-
-/* ══ REGISTAR ═══════════════════════════════════════ */
 .rcard{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px;}
 .rtitle{font-size:15px;font-weight:800;margin-bottom:4px;}
 .rhint{font-size:12px;color:var(--muted);margin-bottom:14px;line-height:1.5;}
@@ -216,18 +113,13 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Inter'
 .log-e{border-left:3px solid var(--green);padding:10px 12px;margin-bottom:8px;background:var(--surface2);border-radius:0 10px 10px 0;font-size:12px;color:var(--muted);line-height:1.7;}
 .log-e strong{color:var(--text);}
 .log-e .m{color:var(--gold);font-weight:700;font-family:monospace;font-size:13px;}
-
-/* ══ MISC ═══════════════════════════════════════════ */
 .empty{text-align:center;padding:3rem 1rem;color:var(--muted);font-size:14px;line-height:1.8;}
 .empty span{font-size:40px;display:block;margin-bottom:10px;}
 #toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--surface);border:1px solid var(--border);color:var(--text);padding:10px 20px;border-radius:99px;font-size:13px;font-weight:600;opacity:0;transition:all .25s;z-index:999;pointer-events:none;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,.5);}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
-.me-tag{font-size:11px;color:var(--gold);font-weight:600;margin-left:4px;}
 ::-webkit-scrollbar{width:4px;}
 ::-webkit-scrollbar-track{background:transparent;}
 ::-webkit-scrollbar-thumb{background:var(--surface3);border-radius:2px;}
-
-/* mobile bottom nav fallback */
 @media(max-width:600px){
   .sidenav{display:none;}
   .botnav{display:flex;position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--border);z-index:50;}
@@ -240,54 +132,43 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Inter'
 </head>
 <body>
 
-<!-- LOGIN -->
 <div id="loginScreen">
   <div class="lbox">
-    <span class="ball">⚽</span>
+    <div style="font-size:52px;margin-bottom:16px;">⚽</div>
     <h2>Cromos Mundial 2026</h2>
     <p>Clica nos cromos que tens. Trocas calculadas automaticamente com os teus amigos.</p>
     <div id="loginContent"><p style="color:var(--muted);font-size:13px;padding:1rem 0;">A ligar...</p></div>
   </div>
 </div>
 
-<!-- APP -->
 <div id="appScreen">
   <div class="topbar">
     <div class="topbar-title">⚽ Mundial 2026</div>
     <div class="topbar-right">
-      <div class="topbar-status"><div class="dot" id="dot"></div><span id="stxt" style="font-size:11px;color:var(--muted);">—</span></div>
-      <div class="topbar-user">
-        <div class="user-avatar" id="topAvatar"></div>
+      <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted);"><div class="dot" id="dot"></div><span id="stxt">—</span></div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div id="topAvatar" style="border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:900;flex-shrink:0;"></div>
         <span style="font-size:13px;font-weight:600;" id="sessName"></span>
       </div>
       <button class="btn-sm" onclick="logout()">Sair</button>
     </div>
   </div>
-
   <div class="app-body">
-    <!-- SIDE NAV (desktop) -->
     <nav class="sidenav">
       <button class="snav active" id="snav-colecao" onclick="switchTab('colecao')"><span class="ico">📋</span>Coleção</button>
       <button class="snav" id="snav-grupo" onclick="switchTab('grupo')"><span class="ico">👥</span>Grupo</button>
       <button class="snav" id="snav-trocas" onclick="switchTab('trocas')"><span class="ico">🔄</span>Trocas</button>
       <button class="snav" id="snav-registar" onclick="switchTab('registar')"><span class="ico">✅</span>Registar</button>
     </nav>
-
     <div class="main">
-      <!-- COLEÇÃO -->
       <div id="tab-colecao" class="section active">
         <div class="col-header">
           <div class="col-header-top">
             <div class="col-title">Mi Colección</div>
-            <div style="text-align:right;">
-              <div class="col-pct" id="globalPct">0%</div>
-              <div class="col-pct-sub" id="globalSub">0 Cromos</div>
-            </div>
+            <div style="text-align:right;"><div class="col-pct" id="globalPct">0%</div><div class="col-pct-sub" id="globalSub">0 Cromos</div></div>
           </div>
           <div class="global-bar"><div class="global-fill" id="globalFill" style="width:0%"></div></div>
-          <div class="col-filters">
-            <input class="col-search" type="text" id="searchInput" placeholder="Pesquisar equipa..." oninput="filterTeams(this.value)"/>
-          </div>
+          <input class="col-search" type="text" id="searchInput" placeholder="Pesquisar equipa..." oninput="filterTeams(this.value)"/>
         </div>
         <div class="legend-row">
           <div class="leg"><div class="leg-chip empty">—</div>Não tens</div>
@@ -297,28 +178,11 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Inter'
         </div>
         <div class="album-content" id="albumGrid"></div>
       </div>
-
-      <!-- GRUPO -->
-      <div id="tab-grupo" class="section">
-        <div class="pad" id="grupoContent"></div>
-      </div>
-
-      <!-- TROCAS -->
-      <div id="tab-trocas" class="section">
-        <div class="pad">
-          <div class="frow" id="trocaFilters"></div>
-          <div id="trocasContent"></div>
-        </div>
-      </div>
-
-      <!-- REGISTAR -->
-      <div id="tab-registar" class="section">
-        <div class="pad" id="registarContent"></div>
-      </div>
+      <div id="tab-grupo" class="section"><div class="pad" id="grupoContent"></div></div>
+      <div id="tab-trocas" class="section"><div class="pad"><div class="frow" id="trocaFilters"></div><div id="trocasContent"></div></div></div>
+      <div id="tab-registar" class="section"><div class="pad" id="registarContent"></div></div>
     </div>
   </div>
-
-  <!-- BOTTOM NAV (mobile) -->
   <nav class="botnav">
     <button class="bnav active" id="bnav-colecao" onclick="switchTab('colecao')"><span class="ico">📋</span>Coleção</button>
     <button class="bnav" id="bnav-grupo" onclick="switchTab('grupo')"><span class="ico">👥</span>Grupo</button>
@@ -326,7 +190,6 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Inter'
     <button class="bnav" id="bnav-registar" onclick="switchTab('registar')"><span class="ico">✅</span>Registar</button>
   </nav>
 </div>
-
 <div id="toast"></div>
 
 <script type="module">
@@ -337,24 +200,66 @@ const firebaseConfig={apiKey:"AIzaSyDCB2L5C_YkNJ_MknirZ6lgMv6P7LQ4GCs",authDomai
 const fbApp=initializeApp(firebaseConfig);
 const db=getFirestore(fbApp);
 
-const TEAMS=[{code:"00",name:"Panini",stickers:["00"]},{code:"FWC",name:"FIFA World Cup 2026",stickers:["FWC 1","FWC 2","FWC 3","FWC 4","FWC 5","FWC 6","FWC 7","FWC 8","FWC 9","FWC 10","FWC 11","FWC 12","FWC 13","FWC 14","FWC 15","FWC 16","FWC 17","FWC 18","FWC 19"]},{code:"ALG",name:"Algeria",stickers:["ALG 1","ALG 2","ALG 3","ALG 4","ALG 5","ALG 6","ALG 7","ALG 8","ALG 9","ALG 10","ALG 11","ALG 12","ALG 13","ALG 14","ALG 15","ALG 16","ALG 17","ALG 18","ALG 19","ALG 20"]},{code:"ARG",name:"Argentina",stickers:["ARG 1","ARG 2","ARG 3","ARG 4","ARG 5","ARG 6","ARG 7","ARG 8","ARG 9","ARG 10","ARG 11","ARG 12","ARG 13","ARG 14","ARG 15","ARG 16","ARG 17","ARG 18","ARG 19","ARG 20"]},{code:"AUS",name:"Australia",stickers:["AUS 1","AUS 2","AUS 3","AUS 4","AUS 5","AUS 6","AUS 7","AUS 8","AUS 9","AUS 10","AUS 11","AUS 12","AUS 13","AUS 14","AUS 15","AUS 16","AUS 17","AUS 18","AUS 19","AUS 20"]},{code:"AUT",name:"Austria",stickers:["AUT 1","AUT 2","AUT 3","AUT 4","AUT 5","AUT 6","AUT 7","AUT 8","AUT 9","AUT 10","AUT 11","AUT 12","AUT 13","AUT 14","AUT 15","AUT 16","AUT 17","AUT 18","AUT 19","AUT 20"]},{code:"BEL",name:"Belgium",stickers:["BEL 1","BEL 2","BEL 3","BEL 4","BEL 5","BEL 6","BEL 7","BEL 8","BEL 9","BEL 10","BEL 11","BEL 12","BEL 13","BEL 14","BEL 15","BEL 16","BEL 17","BEL 18","BEL 19","BEL 20"]},{code:"BIH",name:"Bosnia e Herzegovina",stickers:["BIH 1","BIH 2","BIH 3","BIH 4","BIH 5","BIH 6","BIH 7","BIH 8","BIH 9","BIH 10","BIH 11","BIH 12","BIH 13","BIH 14","BIH 15","BIH 16","BIH 17","BIH 18","BIH 19","BIH 20"]},{code:"BRA",name:"Brazil",stickers:["BRA 1","BRA 2","BRA 3","BRA 4","BRA 5","BRA 6","BRA 7","BRA 8","BRA 9","BRA 10","BRA 11","BRA 12","BRA 13","BRA 14","BRA 15","BRA 16","BRA 17","BRA 18","BRA 19","BRA 20"]},{code:"CAN",name:"Canada",stickers:["CAN 1","CAN 2","CAN 3","CAN 4","CAN 5","CAN 6","CAN 7","CAN 8","CAN 9","CAN 10","CAN 11","CAN 12","CAN 13","CAN 14","CAN 15","CAN 16","CAN 17","CAN 18","CAN 19","CAN 20"]},{code:"CIV",name:"Ivory Coast",stickers:["CIV 1","CIV 2","CIV 3","CIV 4","CIV 5","CIV 6","CIV 7","CIV 8","CIV 9","CIV 10","CIV 11","CIV 12","CIV 13","CIV 14","CIV 15","CIV 16","CIV 17","CIV 18","CIV 19","CIV 20"]},{code:"COD",name:"Congo DR",stickers:["COD 1","COD 2","COD 3","COD 4","COD 5","COD 6","COD 7","COD 8","COD 9","COD 10","COD 11","COD 12","COD 13","COD 14","COD 15","COD 16","COD 17","COD 18","COD 19","COD 20"]},{code:"COL",name:"Colombia",stickers:["COL 1","COL 2","COL 3","COL 4","COL 5","COL 6","COL 7","COL 8","COL 9","COL 10","COL 11","COL 12","COL 13","COL 14","COL 15","COL 16","COL 17","COL 18","COL 19","COL 20"]},{code:"CPV",name:"Cape Verde",stickers:["CPV 1","CPV 2","CPV 3","CPV 4","CPV 5","CPV 6","CPV 7","CPV 8","CPV 9","CPV 10","CPV 11","CPV 12","CPV 13","CPV 14","CPV 15","CPV 16","CPV 17","CPV 18","CPV 19","CPV 20"]},{code:"CRO",name:"Croatia",stickers:["CRO 1","CRO 2","CRO 3","CRO 4","CRO 5","CRO 6","CRO 7","CRO 8","CRO 9","CRO 10","CRO 11","CRO 12","CRO 13","CRO 14","CRO 15","CRO 16","CRO 17","CRO 18","CRO 19","CRO 20"]},{code:"CUW",name:"Cura\u00e7ao",stickers:["CUW 1","CUW 2","CUW 3","CUW 4","CUW 5","CUW 6","CUW 7","CUW 8","CUW 9","CUW 10","CUW 11","CUW 12","CUW 13","CUW 14","CUW 15","CUW 16","CUW 17","CUW 18","CUW 19","CUW 20"]},{code:"CZE",name:"Czechia",stickers:["CZE 1","CZE 2","CZE 3","CZE 4","CZE 5","CZE 6","CZE 7","CZE 8","CZE 9","CZE 10","CZE 11","CZE 12","CZE 13","CZE 14","CZE 15","CZE 16","CZE 17","CZE 18","CZE 19","CZE 20"]},{code:"ECU",name:"Ecuador",stickers:["ECU 1","ECU 2","ECU 3","ECU 4","ECU 5","ECU 6","ECU 7","ECU 8","ECU 9","ECU 10","ECU 11","ECU 12","ECU 13","ECU 14","ECU 15","ECU 16","ECU 17","ECU 18","ECU 19","ECU 20"]},{code:"EGY",name:"Egypt",stickers:["EGY 1","EGY 2","EGY 3","EGY 4","EGY 5","EGY 6","EGY 7","EGY 8","EGY 9","EGY 10","EGY 11","EGY 12","EGY 13","EGY 14","EGY 15","EGY 16","EGY 17","EGY 18","EGY 19","EGY 20"]},{code:"ENG",name:"England",stickers:["ENG 1","ENG 2","ENG 3","ENG 4","ENG 5","ENG 6","ENG 7","ENG 8","ENG 9","ENG 10","ENG 11","ENG 12","ENG 13","ENG 14","ENG 15","ENG 16","ENG 17","ENG 18","ENG 19","ENG 20"]},{code:"ESP",name:"Spain",stickers:["ESP 1","ESP 2","ESP 3","ESP 4","ESP 5","ESP 6","ESP 7","ESP 8","ESP 9","ESP 10","ESP 11","ESP 12","ESP 13","ESP 14","ESP 15","ESP 16","ESP 17","ESP 18","ESP 19","ESP 20"]},{code:"FRA",name:"France",stickers:["FRA 1","FRA 2","FRA 3","FRA 4","FRA 5","FRA 6","FRA 7","FRA 8","FRA 9","FRA 10","FRA 11","FRA 12","FRA 13","FRA 14","FRA 15","FRA 16","FRA 17","FRA 18","FRA 19","FRA 20"]},{code:"GER",name:"Germany",stickers:["GER 1","GER 2","GER 3","GER 4","GER 5","GER 6","GER 7","GER 8","GER 9","GER 10","GER 11","GER 12","GER 13","GER 14","GER 15","GER 16","GER 17","GER 18","GER 19","GER 20"]},{code:"GHA",name:"Ghana",stickers:["GHA 1","GHA 2","GHA 3","GHA 4","GHA 5","GHA 6","GHA 7","GHA 8","GHA 9","GHA 10","GHA 11","GHA 12","GHA 13","GHA 14","GHA 15","GHA 16","GHA 17","GHA 18","GHA 19","GHA 20"]},{code:"HAI",name:"Haiti",stickers:["HAI 1","HAI 2","HAI 3","HAI 4","HAI 5","HAI 6","HAI 7","HAI 8","HAI 9","HAI 10","HAI 11","HAI 12","HAI 13","HAI 14","HAI 15","HAI 16","HAI 17","HAI 18","HAI 19","HAI 20"]},{code:"IRN",name:"Iran",stickers:["IRN 1","IRN 2","IRN 3","IRN 4","IRN 5","IRN 6","IRN 7","IRN 8","IRN 9","IRN 10","IRN 11","IRN 12","IRN 13","IRN 14","IRN 15","IRN 16","IRN 17","IRN 18","IRN 19","IRN 20"]},{code:"IRQ",name:"Iraq",stickers:["IRQ 1","IRQ 2","IRQ 3","IRQ 4","IRQ 5","IRQ 6","IRQ 7","IRQ 8","IRQ 9","IRQ 10","IRQ 11","IRQ 12","IRQ 13","IRQ 14","IRQ 15","IRQ 16","IRQ 17","IRQ 18","IRQ 19","IRQ 20"]},{code:"JOR",name:"Jordan",stickers:["JOR 1","JOR 2","JOR 3","JOR 4","JOR 5","JOR 6","JOR 7","JOR 8","JOR 9","JOR 10","JOR 11","JOR 12","JOR 13","JOR 14","JOR 15","JOR 16","JOR 17","JOR 18","JOR 19","JOR 20"]},{code:"JPN",name:"Japan",stickers:["JPN 1","JPN 2","JPN 3","JPN 4","JPN 5","JPN 6","JPN 7","JPN 8","JPN 9","JPN 10","JPN 11","JPN 12","JPN 13","JPN 14","JPN 15","JPN 16","JPN 17","JPN 18","JPN 19","JPN 20"]},{code:"KOR",name:"Korea Republic",stickers:["KOR 1","KOR 2","KOR 3","KOR 4","KOR 5","KOR 6","KOR 7","KOR 8","KOR 9","KOR 10","KOR 11","KOR 12","KOR 13","KOR 14","KOR 15","KOR 16","KOR 17","KOR 18","KOR 19","KOR 20"]},{code:"KSA",name:"Saudi Arabia",stickers:["KSA 1","KSA 2","KSA 3","KSA 4","KSA 5","KSA 6","KSA 7","KSA 8","KSA 9","KSA 10","KSA 11","KSA 12","KSA 13","KSA 14","KSA 15","KSA 16","KSA 17","KSA 18","KSA 19","KSA 20"]},{code:"MAR",name:"Morocco",stickers:["MAR 1","MAR 2","MAR 3","MAR 4","MAR 5","MAR 6","MAR 7","MAR 8","MAR 9","MAR 10","MAR 11","MAR 12","MAR 13","MAR 14","MAR 15","MAR 16","MAR 17","MAR 18","MAR 19","MAR 20"]},{code:"MEX",name:"Mexico",stickers:["MEX 1","MEX 2","MEX 3","MEX 4","MEX 5","MEX 6","MEX 7","MEX 8","MEX 9","MEX 10","MEX 11","MEX 12","MEX 13","MEX 14","MEX 15","MEX 16","MEX 17","MEX 18","MEX 19","MEX 20"]},{code:"NED",name:"Netherlands",stickers:["NED 1","NED 2","NED 3","NED 4","NED 5","NED 6","NED 7","NED 8","NED 9","NED 10","NED 11","NED 12","NED 13","NED 14","NED 15","NED 16","NED 17","NED 18","NED 19","NED 20"]},{code:"NOR",name:"Norway",stickers:["NOR 1","NOR 2","NOR 3","NOR 4","NOR 5","NOR 6","NOR 7","NOR 8","NOR 9","NOR 10","NOR 11","NOR 12","NOR 13","NOR 14","NOR 15","NOR 16","NOR 17","NOR 18","NOR 19","NOR 20"]},{code:"NZL",name:"New Zealand",stickers:["NZL 1","NZL 2","NZL 3","NZL 4","NZL 5","NZL 6","NZL 7","NZL 8","NZL 9","NZL 10","NZL 11","NZL 12","NZL 13","NZL 14","NZL 15","NZL 16","NZL 17","NZL 18","NZL 19","NZL 20"]},{code:"PAN",name:"Panama",stickers:["PAN 1","PAN 2","PAN 3","PAN 4","PAN 5","PAN 6","PAN 7","PAN 8","PAN 9","PAN 10","PAN 11","PAN 12","PAN 13","PAN 14","PAN 15","PAN 16","PAN 17","PAN 18","PAN 19","PAN 20"]},{code:"PAR",name:"Paraguay",stickers:["PAR 1","PAR 2","PAR 3","PAR 4","PAR 5","PAR 6","PAR 7","PAR 8","PAR 9","PAR 10","PAR 11","PAR 12","PAR 13","PAR 14","PAR 15","PAR 16","PAR 17","PAR 18","PAR 19","PAR 20"]},{code:"POR",name:"Portugal",stickers:["POR 1","POR 2","POR 3","POR 4","POR 5","POR 6","POR 7","POR 8","POR 9","POR 10","POR 11","POR 12","POR 13","POR 14","POR 15","POR 16","POR 17","POR 18","POR 19","POR 20"]},{code:"QAT",name:"Qatar",stickers:["QAT 1","QAT 2","QAT 3","QAT 4","QAT 5","QAT 6","QAT 7","QAT 8","QAT 9","QAT 10","QAT 11","QAT 12","QAT 13","QAT 14","QAT 15","QAT 16","QAT 17","QAT 18","QAT 19","QAT 20"]},{code:"RSA",name:"South Africa",stickers:["RSA 1","RSA 2","RSA 3","RSA 4","RSA 5","RSA 6","RSA 7","RSA 8","RSA 9","RSA 10","RSA 11","RSA 12","RSA 13","RSA 14","RSA 15","RSA 16","RSA 17","RSA 18","RSA 19","RSA 20"]},{code:"SCO",name:"Scotland",stickers:["SCO 1","SCO 2","SCO 3","SCO 4","SCO 5","SCO 6","SCO 7","SCO 8","SCO 9","SCO 10","SCO 11","SCO 12","SCO 13","SCO 14","SCO 15","SCO 16","SCO 17","SCO 18","SCO 19","SCO 20"]},{code:"SEN",name:"Senegal",stickers:["SEN 1","SEN 2","SEN 3","SEN 4","SEN 5","SEN 6","SEN 7","SEN 8","SEN 9","SEN 10","SEN 11","SEN 12","SEN 13","SEN 14","SEN 15","SEN 16","SEN 17","SEN 18","SEN 19","SEN 20"]},{code:"SUI",name:"Switzerland",stickers:["SUI 1","SUI 2","SUI 3","SUI 4","SUI 5","SUI 6","SUI 7","SUI 8","SUI 9","SUI 10","SUI 11","SUI 12","SUI 13","SUI 14","SUI 15","SUI 16","SUI 17","SUI 18","SUI 19","SUI 20"]},{code:"SWE",name:"Sweden",stickers:["SWE 1","SWE 2","SWE 3","SWE 4","SWE 5","SWE 6","SWE 7","SWE 8","SWE 9","SWE 10","SWE 11","SWE 12","SWE 13","SWE 14","SWE 15","SWE 16","SWE 17","SWE 18","SWE 19","SWE 20"]},{code:"TUN",name:"Tunisia",stickers:["TUN 1","TUN 2","TUN 3","TUN 4","TUN 5","TUN 6","TUN 7","TUN 8","TUN 9","TUN 10","TUN 11","TUN 12","TUN 13","TUN 14","TUN 15","TUN 16","TUN 17","TUN 18","TUN 19","TUN 20"]},{code:"TUR",name:"T\u00fcrkiye",stickers:["TUR 1","TUR 2","TUR 3","TUR 4","TUR 5","TUR 6","TUR 7","TUR 8","TUR 9","TUR 10","TUR 11","TUR 12","TUR 13","TUR 14","TUR 15","TUR 16","TUR 17","TUR 18","TUR 19","TUR 20"]},{code:"URU",name:"Uruguay",stickers:["URU 1","URU 2","URU 3","URU 4","URU 5","URU 6","URU 7","URU 8","URU 9","URU 10","URU 11","URU 12","URU 13","URU 14","URU 15","URU 16","URU 17","URU 18","URU 19","URU 20"]},{code:"USA",name:"United States",stickers:["USA 1","USA 2","USA 3","USA 4","USA 5","USA 6","USA 7","USA 8","USA 9","USA 10","USA 11","USA 12","USA 13","USA 14","USA 15","USA 16","USA 17","USA 18","USA 19","USA 20"]},{code:"UZB",name:"Uzbekistan",stickers:["UZB 1","UZB 2","UZB 3","UZB 4","UZB 5","UZB 6","UZB 7","UZB 8","UZB 9","UZB 10","UZB 11","UZB 12","UZB 13","UZB 14","UZB 15","UZB 16","UZB 17","UZB 18","UZB 19","UZB 20"]}];
-const TOTAL_STICKERS=TEAMS.reduce((s,t)=>s+t.stickers.length,0);
-
-const COLORS=[
-  {bg:'#1a2a4a',txt:'#6BA3E0',brd:'#2d4d8a'},
-  {bg:'#2a1a4a',txt:'#A07AE0',brd:'#5a3a9a'},
-  {bg:'#1a3a2a',txt:'#5ABD7A',brd:'#2a6a4a'},
-  {bg:'#3a2a1a',txt:'#E0A050',brd:'#8a5a1a'},
-  {bg:'#3a1a1a',txt:'#E07070',brd:'#9a3030'},
-  {bg:'#1a3a3a',txt:'#50C0C0',brd:'#1a7a7a'},
-  {bg:'#2a3a1a',txt:'#90C040',brd:'#4a7a1a'},
+// ── EQUIPAS NA ORDEM DO EXCEL ─────────────────────────
+const TEAMS=[
+  {code:"00",   name:"Panini",               stickers:["00"]},
+  {code:"FWC",  name:"FIFA",                 stickers:["FWC 1","FWC 2","FWC 3","FWC 4","FWC 5","FWC 6","FWC 7","FWC 8","FWC 9","FWC 10","FWC 11","FWC 12","FWC 13","FWC 14","FWC 15","FWC 16","FWC 17","FWC 18","FWC 19"]},
+  {code:"MEX",  name:"Mexico",               stickers:["MEX 1","MEX 2","MEX 3","MEX 4","MEX 5","MEX 6","MEX 7","MEX 8","MEX 9","MEX 10","MEX 11","MEX 12","MEX 13","MEX 14","MEX 15","MEX 16","MEX 17","MEX 18","MEX 19","MEX 20"]},
+  {code:"RSA",  name:"Sudáfrica",            stickers:["RSA 1","RSA 2","RSA 3","RSA 4","RSA 5","RSA 6","RSA 7","RSA 8","RSA 9","RSA 10","RSA 11","RSA 12","RSA 13","RSA 14","RSA 15","RSA 16","RSA 17","RSA 18","RSA 19","RSA 20"]},
+  {code:"KOR",  name:"Corea del Sur",        stickers:["KOR 1","KOR 2","KOR 3","KOR 4","KOR 5","KOR 6","KOR 7","KOR 8","KOR 9","KOR 10","KOR 11","KOR 12","KOR 13","KOR 14","KOR 15","KOR 16","KOR 17","KOR 18","KOR 19","KOR 20"]},
+  {code:"CZE",  name:"República Checa",      stickers:["CZE 1","CZE 2","CZE 3","CZE 4","CZE 5","CZE 6","CZE 7","CZE 8","CZE 9","CZE 10","CZE 11","CZE 12","CZE 13","CZE 14","CZE 15","CZE 16","CZE 17","CZE 18","CZE 19","CZE 20"]},
+  {code:"CAN",  name:"Canada",               stickers:["CAN 1","CAN 2","CAN 3","CAN 4","CAN 5","CAN 6","CAN 7","CAN 8","CAN 9","CAN 10","CAN 11","CAN 12","CAN 13","CAN 14","CAN 15","CAN 16","CAN 17","CAN 18","CAN 19","CAN 20"]},
+  {code:"BIH",  name:"Bosnia y Herzegovina", stickers:["BIH 1","BIH 2","BIH 3","BIH 4","BIH 5","BIH 6","BIH 7","BIH 8","BIH 9","BIH 10","BIH 11","BIH 12","BIH 13","BIH 14","BIH 15","BIH 16","BIH 17","BIH 18","BIH 19","BIH 20"]},
+  {code:"QAT",  name:"Qatar",                stickers:["QAT 1","QAT 2","QAT 3","QAT 4","QAT 5","QAT 6","QAT 7","QAT 8","QAT 9","QAT 10","QAT 11","QAT 12","QAT 13","QAT 14","QAT 15","QAT 16","QAT 17","QAT 18","QAT 19","QAT 20"]},
+  {code:"SUI",  name:"Suiza",                stickers:["SUI 1","SUI 2","SUI 3","SUI 4","SUI 5","SUI 6","SUI 7","SUI 8","SUI 9","SUI 10","SUI 11","SUI 12","SUI 13","SUI 14","SUI 15","SUI 16","SUI 17","SUI 18","SUI 19","SUI 20"]},
+  {code:"BRA",  name:"Brasil",               stickers:["BRA 1","BRA 2","BRA 3","BRA 4","BRA 5","BRA 6","BRA 7","BRA 8","BRA 9","BRA 10","BRA 11","BRA 12","BRA 13","BRA 14","BRA 15","BRA 16","BRA 17","BRA 18","BRA 19","BRA 20"]},
+  {code:"MAR",  name:"Marruecos",            stickers:["MAR 1","MAR 2","MAR 3","MAR 4","MAR 5","MAR 6","MAR 7","MAR 8","MAR 9","MAR 10","MAR 11","MAR 12","MAR 13","MAR 14","MAR 15","MAR 16","MAR 17","MAR 18","MAR 19","MAR 20"]},
+  {code:"HAI",  name:"Haití",                stickers:["HAI 1","HAI 2","HAI 3","HAI 4","HAI 5","HAI 6","HAI 7","HAI 8","HAI 9","HAI 10","HAI 11","HAI 12","HAI 13","HAI 14","HAI 15","HAI 16","HAI 17","HAI 18","HAI 19","HAI 20"]},
+  {code:"SCO",  name:"Escocia",              stickers:["SCO 1","SCO 2","SCO 3","SCO 4","SCO 5","SCO 6","SCO 7","SCO 8","SCO 9","SCO 10","SCO 11","SCO 12","SCO 13","SCO 14","SCO 15","SCO 16","SCO 17","SCO 18","SCO 19","SCO 20"]},
+  {code:"USA",  name:"Estados Unidos",       stickers:["USA 1","USA 2","USA 3","USA 4","USA 5","USA 6","USA 7","USA 8","USA 9","USA 10","USA 11","USA 12","USA 13","USA 14","USA 15","USA 16","USA 17","USA 18","USA 19","USA 20"]},
+  {code:"PAR",  name:"Paraguay",             stickers:["PAR 1","PAR 2","PAR 3","PAR 4","PAR 5","PAR 6","PAR 7","PAR 8","PAR 9","PAR 10","PAR 11","PAR 12","PAR 13","PAR 14","PAR 15","PAR 16","PAR 17","PAR 18","PAR 19","PAR 20"]},
+  {code:"AUS",  name:"Australia",            stickers:["AUS 1","AUS 2","AUS 3","AUS 4","AUS 5","AUS 6","AUS 7","AUS 8","AUS 9","AUS 10","AUS 11","AUS 12","AUS 13","AUS 14","AUS 15","AUS 16","AUS 17","AUS 18","AUS 19","AUS 20"]},
+  {code:"TUR",  name:"Turquía",              stickers:["TUR 1","TUR 2","TUR 3","TUR 4","TUR 5","TUR 6","TUR 7","TUR 8","TUR 9","TUR 10","TUR 11","TUR 12","TUR 13","TUR 14","TUR 15","TUR 16","TUR 17","TUR 18","TUR 19","TUR 20"]},
+  {code:"GER",  name:"Alemania",             stickers:["GER 1","GER 2","GER 3","GER 4","GER 5","GER 6","GER 7","GER 8","GER 9","GER 10","GER 11","GER 12","GER 13","GER 14","GER 15","GER 16","GER 17","GER 18","GER 19","GER 20"]},
+  {code:"CUW",  name:"Curazao",              stickers:["CUW 1","CUW 2","CUW 3","CUW 4","CUW 5","CUW 6","CUW 7","CUW 8","CUW 9","CUW 10","CUW 11","CUW 12","CUW 13","CUW 14","CUW 15","CUW 16","CUW 17","CUW 18","CUW 19","CUW 20"]},
+  {code:"CIV",  name:"Costa de Marfil",      stickers:["CIV 1","CIV 2","CIV 3","CIV 4","CIV 5","CIV 6","CIV 7","CIV 8","CIV 9","CIV 10","CIV 11","CIV 12","CIV 13","CIV 14","CIV 15","CIV 16","CIV 17","CIV 18","CIV 19","CIV 20"]},
+  {code:"ECU",  name:"Ecuador",              stickers:["ECU 1","ECU 2","ECU 3","ECU 4","ECU 5","ECU 6","ECU 7","ECU 8","ECU 9","ECU 10","ECU 11","ECU 12","ECU 13","ECU 14","ECU 15","ECU 16","ECU 17","ECU 18","ECU 19","ECU 20"]},
+  {code:"NED",  name:"Holanda",              stickers:["NED 1","NED 2","NED 3","NED 4","NED 5","NED 6","NED 7","NED 8","NED 9","NED 10","NED 11","NED 12","NED 13","NED 14","NED 15","NED 16","NED 17","NED 18","NED 19","NED 20"]},
+  {code:"JPN",  name:"Japón",                stickers:["JPN 1","JPN 2","JPN 3","JPN 4","JPN 5","JPN 6","JPN 7","JPN 8","JPN 9","JPN 10","JPN 11","JPN 12","JPN 13","JPN 14","JPN 15","JPN 16","JPN 17","JPN 18","JPN 19","JPN 20"]},
+  {code:"SWE",  name:"Suecia",               stickers:["SWE 1","SWE 2","SWE 3","SWE 4","SWE 5","SWE 6","SWE 7","SWE 8","SWE 9","SWE 10","SWE 11","SWE 12","SWE 13","SWE 14","SWE 15","SWE 16","SWE 17","SWE 18","SWE 19","SWE 20"]},
+  {code:"TUN",  name:"Túnez",                stickers:["TUN 1","TUN 2","TUN 3","TUN 4","TUN 5","TUN 6","TUN 7","TUN 8","TUN 9","TUN 10","TUN 11","TUN 12","TUN 13","TUN 14","TUN 15","TUN 16","TUN 17","TUN 18","TUN 19","TUN 20"]},
+  {code:"BEL",  name:"Bélgica",              stickers:["BEL 1","BEL 2","BEL 3","BEL 4","BEL 5","BEL 6","BEL 7","BEL 8","BEL 9","BEL 10","BEL 11","BEL 12","BEL 13","BEL 14","BEL 15","BEL 16","BEL 17","BEL 18","BEL 19","BEL 20"]},
+  {code:"EGY",  name:"Egipto",               stickers:["EGY 1","EGY 2","EGY 3","EGY 4","EGY 5","EGY 6","EGY 7","EGY 8","EGY 9","EGY 10","EGY 11","EGY 12","EGY 13","EGY 14","EGY 15","EGY 16","EGY 17","EGY 18","EGY 19","EGY 20"]},
+  {code:"IRN",  name:"Irán",                 stickers:["IRN 1","IRN 2","IRN 3","IRN 4","IRN 5","IRN 6","IRN 7","IRN 8","IRN 9","IRN 10","IRN 11","IRN 12","IRN 13","IRN 14","IRN 15","IRN 16","IRN 17","IRN 18","IRN 19","IRN 20"]},
+  {code:"NZL",  name:"Nueva Zelanda",        stickers:["NZL 1","NZL 2","NZL 3","NZL 4","NZL 5","NZL 6","NZL 7","NZL 8","NZL 9","NZL 10","NZL 11","NZL 12","NZL 13","NZL 14","NZL 15","NZL 16","NZL 17","NZL 18","NZL 19","NZL 20"]},
+  {code:"ESP",  name:"España",               stickers:["ESP 1","ESP 2","ESP 3","ESP 4","ESP 5","ESP 6","ESP 7","ESP 8","ESP 9","ESP 10","ESP 11","ESP 12","ESP 13","ESP 14","ESP 15","ESP 16","ESP 17","ESP 18","ESP 19","ESP 20"]},
+  {code:"CPV",  name:"Cabo Verde",           stickers:["CPV 1","CPV 2","CPV 3","CPV 4","CPV 5","CPV 6","CPV 7","CPV 8","CPV 9","CPV 10","CPV 11","CPV 12","CPV 13","CPV 14","CPV 15","CPV 16","CPV 17","CPV 18","CPV 19","CPV 20"]},
+  {code:"KSA",  name:"Arabia Saudita",       stickers:["KSA 1","KSA 2","KSA 3","KSA 4","KSA 5","KSA 6","KSA 7","KSA 8","KSA 9","KSA 10","KSA 11","KSA 12","KSA 13","KSA 14","KSA 15","KSA 16","KSA 17","KSA 18","KSA 19","KSA 20"]},
+  {code:"URU",  name:"Uruguay",              stickers:["URU 1","URU 2","URU 3","URU 4","URU 5","URU 6","URU 7","URU 8","URU 9","URU 10","URU 11","URU 12","URU 13","URU 14","URU 15","URU 16","URU 17","URU 18","URU 19","URU 20"]},
+  {code:"FRA",  name:"Francia",              stickers:["FRA 1","FRA 2","FRA 3","FRA 4","FRA 5","FRA 6","FRA 7","FRA 8","FRA 9","FRA 10","FRA 11","FRA 12","FRA 13","FRA 14","FRA 15","FRA 16","FRA 17","FRA 18","FRA 19","FRA 20"]},
+  {code:"SEN",  name:"Senegal",              stickers:["SEN 1","SEN 2","SEN 3","SEN 4","SEN 5","SEN 6","SEN 7","SEN 8","SEN 9","SEN 10","SEN 11","SEN 12","SEN 13","SEN 14","SEN 15","SEN 16","SEN 17","SEN 18","SEN 19","SEN 20"]},
+  {code:"IRQ",  name:"Iraq",                 stickers:["IRQ 1","IRQ 2","IRQ 3","IRQ 4","IRQ 5","IRQ 6","IRQ 7","IRQ 8","IRQ 9","IRQ 10","IRQ 11","IRQ 12","IRQ 13","IRQ 14","IRQ 15","IRQ 16","IRQ 17","IRQ 18","IRQ 19","IRQ 20"]},
+  {code:"NOR",  name:"Noruega",              stickers:["NOR 1","NOR 2","NOR 3","NOR 4","NOR 5","NOR 6","NOR 7","NOR 8","NOR 9","NOR 10","NOR 11","NOR 12","NOR 13","NOR 14","NOR 15","NOR 16","NOR 17","NOR 18","NOR 19","NOR 20"]},
+  {code:"ARG",  name:"Argentina",            stickers:["ARG 1","ARG 2","ARG 3","ARG 4","ARG 5","ARG 6","ARG 7","ARG 8","ARG 9","ARG 10","ARG 11","ARG 12","ARG 13","ARG 14","ARG 15","ARG 16","ARG 17","ARG 18","ARG 19","ARG 20"]},
+  {code:"ALG",  name:"Algeria",              stickers:["ALG 1","ALG 2","ALG 3","ALG 4","ALG 5","ALG 6","ALG 7","ALG 8","ALG 9","ALG 10","ALG 11","ALG 12","ALG 13","ALG 14","ALG 15","ALG 16","ALG 17","ALG 18","ALG 19","ALG 20"]},
+  {code:"AUT",  name:"Austria",              stickers:["AUT 1","AUT 2","AUT 3","AUT 4","AUT 5","AUT 6","AUT 7","AUT 8","AUT 9","AUT 10","AUT 11","AUT 12","AUT 13","AUT 14","AUT 15","AUT 16","AUT 17","AUT 18","AUT 19","AUT 20"]},
+  {code:"JOR",  name:"Jordania",             stickers:["JOR 1","JOR 2","JOR 3","JOR 4","JOR 5","JOR 6","JOR 7","JOR 8","JOR 9","JOR 10","JOR 11","JOR 12","JOR 13","JOR 14","JOR 15","JOR 16","JOR 17","JOR 18","JOR 19","JOR 20"]},
+  {code:"POR",  name:"Portugal",             stickers:["POR 1","POR 2","POR 3","POR 4","POR 5","POR 6","POR 7","POR 8","POR 9","POR 10","POR 11","POR 12","POR 13","POR 14","POR 15","POR 16","POR 17","POR 18","POR 19","POR 20"]},
+  {code:"COD",  name:"Congo",                stickers:["COD 1","COD 2","COD 3","COD 4","COD 5","COD 6","COD 7","COD 8","COD 9","COD 10","COD 11","COD 12","COD 13","COD 14","COD 15","COD 16","COD 17","COD 18","COD 19","COD 20"]},
+  {code:"UZB",  name:"Uzbekistan",           stickers:["UZB 1","UZB 2","UZB 3","UZB 4","UZB 5","UZB 6","UZB 7","UZB 8","UZB 9","UZB 10","UZB 11","UZB 12","UZB 13","UZB 14","UZB 15","UZB 16","UZB 17","UZB 18","UZB 19","UZB 20"]},
+  {code:"COL",  name:"Colombia",             stickers:["COL 1","COL 2","COL 3","COL 4","COL 5","COL 6","COL 7","COL 8","COL 9","COL 10","COL 11","COL 12","COL 13","COL 14","COL 15","COL 16","COL 17","COL 18","COL 19","COL 20"]},
+  {code:"ENG",  name:"Inglaterra",           stickers:["ENG 1","ENG 2","ENG 3","ENG 4","ENG 5","ENG 6","ENG 7","ENG 8","ENG 9","ENG 10","ENG 11","ENG 12","ENG 13","ENG 14","ENG 15","ENG 16","ENG 17","ENG 18","ENG 19","ENG 20"]},
+  {code:"CRO",  name:"Croacia",              stickers:["CRO 1","CRO 2","CRO 3","CRO 4","CRO 5","CRO 6","CRO 7","CRO 8","CRO 9","CRO 10","CRO 11","CRO 12","CRO 13","CRO 14","CRO 15","CRO 16","CRO 17","CRO 18","CRO 19","CRO 20"]},
+  {code:"GHA",  name:"Ghana",                stickers:["GHA 1","GHA 2","GHA 3","GHA 4","GHA 5","GHA 6","GHA 7","GHA 8","GHA 9","GHA 10","GHA 11","GHA 12","GHA 13","GHA 14","GHA 15","GHA 16","GHA 17","GHA 18","GHA 19","GHA 20"]},
+  {code:"PAN",  name:"Panamá",               stickers:["PAN 1","PAN 2","PAN 3","PAN 4","PAN 5","PAN 6","PAN 7","PAN 8","PAN 9","PAN 10","PAN 11","PAN 12","PAN 13","PAN 14","PAN 15","PAN 16","PAN 17","PAN 18","PAN 19","PAN 20"]},
+  {code:"CC",   name:"Coca Cola",            stickers:["CC 1","CC 2","CC 3","CC 4","CC 5","CC 6","CC 7","CC 8","CC 9","CC 10","CC 11","CC 12","CC 13","CC 14"]},
 ];
+const TOTAL=TEAMS.reduce((s,t)=>s+t.stickers.length,0);
+
+const COLORS=[{bg:'#1a2a4a',txt:'#6BA3E0',brd:'#2d4d8a'},{bg:'#2a1a4a',txt:'#A07AE0',brd:'#5a3a9a'},{bg:'#1a3a2a',txt:'#5ABD7A',brd:'#2a6a4a'},{bg:'#3a2a1a',txt:'#E0A050',brd:'#8a5a1a'},{bg:'#3a1a1a',txt:'#E07070',brd:'#9a3030'},{bg:'#1a3a3a',txt:'#50C0C0',brd:'#1a7a7a'},{bg:'#2a3a1a',txt:'#90C040',brd:'#4a7a1a'}];
 function uid(){return'_'+Math.random().toString(36).slice(2,10);}
 function initials(n){return(n||'?').trim().split(/\s+/).map(w=>w[0]).join('').toUpperCase().slice(0,2)||'?';}
-function avS(ci,sz){
-  const c=COLORS[((ci||0)+COLORS.length)%COLORS.length];
-  return`width:${sz}px;height:${sz}px;min-width:${sz}px;font-size:${sz>=38?14:11}px;background:${c.bg};color:${c.txt};border:1px solid ${c.brd};border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:900;flex-shrink:0;`;
-}
+function avS(ci,sz){const c=COLORS[((ci||0)+COLORS.length)%COLORS.length];return`width:${sz}px;height:${sz}px;min-width:${sz}px;font-size:${sz>=38?14:11}px;background:${c.bg};color:${c.txt};border:1px solid ${c.brd};border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:900;flex-shrink:0;`;}
 
 let state={users:[],log:[],currentUserId:null,trocaFilter:'todas',tab:'colecao'};
 function me(){return state.users.find(u=>u.id===state.currentUserId);}
@@ -430,14 +335,12 @@ async function doLogin(){
   }else{state.currentUserId=sel;sessionStorage.setItem('cromos_uid',sel);}
   enterApp();
 }
-
 function enterApp(){
   document.getElementById('loginScreen').style.display='none';
   const as=document.getElementById('appScreen');as.style.display='flex';as.classList.add('show');
   const u=me();if(!u)return;
   document.getElementById('sessName').textContent=u.name;
-  const av=document.getElementById('topAvatar');
-  av.style.cssText=avS(u.color,32);av.textContent=initials(u.name);
+  const av=document.getElementById('topAvatar');av.style.cssText=avS(u.color,32);av.textContent=initials(u.name);
   buildAlbum();renderGrupo();renderTrocas();renderRegistar();
 }
 window.logout=function(){
@@ -446,35 +349,28 @@ window.logout=function(){
   const as=document.getElementById('appScreen');as.style.display='none';as.classList.remove('show');
   renderLogin();
 };
-
 window.switchTab=function(tab){
   state.tab=tab;
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-  ['snav','bnav'].forEach(prefix=>{
-    document.querySelectorAll('.'+prefix).forEach(b=>b.classList.remove('active'));
-    const el=document.getElementById(prefix+'-'+tab);if(el)el.classList.add('active');
-  });
+  ['snav','bnav'].forEach(p=>{document.querySelectorAll('.'+p).forEach(b=>b.classList.remove('active'));const e=document.getElementById(p+'-'+tab);if(e)e.classList.add('active');});
   document.getElementById('tab-'+tab).classList.add('active');
   if(tab==='grupo')renderGrupo();
   if(tab==='trocas')renderTrocas();
   if(tab==='registar')renderRegistar();
 };
-
 function refreshAll(){
   refreshAlbumChips();updateGlobalProgress();
   if(state.tab==='grupo')renderGrupo();
   if(state.tab==='trocas')renderTrocas();
   if(state.tab==='registar')renderRegistar();
 }
-
 function chipId(k){return'c-'+k.replace(/\s/g,'-');}
-
 function buildAlbum(){
   const grid=document.getElementById('albumGrid');
   grid.innerHTML=TEAMS.map(team=>`
     <div class="team-block" data-code="${team.code}" data-name="${team.name.toLowerCase()}">
       <div class="team-label" onclick="toggleTeam('${team.code}')">
-        <div class="team-label-left">
+        <div style="display:flex;align-items:center;">
           <span class="team-code">${team.code}</span>
           <span class="team-name-full">${team.name}</span>
         </div>
@@ -485,18 +381,13 @@ function buildAlbum(){
         </div>
       </div>
       <div class="team-grid" id="tb-${team.code}">
-        ${team.stickers.map(k=>{
-          const num=k.includes(' ')?k.split(' ')[1]:k;
-          return`<div class="chip" id="${chipId(k)}" data-key="${k}"><span class="chip-num">${num}</span><span class="chip-code">${team.code}</span></div>`;
-        }).join('')}
+        ${team.stickers.map(k=>{const num=k.includes(' ')?k.split(' ')[1]:k;return`<div class="chip" id="${chipId(k)}" data-key="${k}"><span class="chip-num">${num}</span><span class="chip-code">${team.code}</span></div>`;}).join('')}
       </div>
     </div>`).join('');
-
   grid.addEventListener('click',e=>{const c=e.target.closest('.chip');if(c)chipClick(c.dataset.key);});
   grid.addEventListener('contextmenu',e=>{const c=e.target.closest('.chip');if(c){e.preventDefault();chipRight(c.dataset.key);}});
   refreshAlbumChips();updateGlobalProgress();
 }
-
 function refreshAlbumChips(){
   const u=me();if(!u)return;
   TEAMS.forEach(team=>{
@@ -505,40 +396,31 @@ function refreshAlbumChips(){
       const cnt=getCount(u,k);
       const el=document.getElementById(chipId(k));if(!el)return;
       const num=k.includes(' ')?k.split(' ')[1]:k;
-      const code=team.code;
       el.className='chip'+(cnt>=1?' have':'')+(cnt>=2?' rep':'');
-      el.innerHTML=`<span class="chip-num">${num}</span><span class="chip-code">${code}</span>`+(cnt>=2?`<span class="rep-badge">${cnt}</span>`:'');
+      el.innerHTML=`<span class="chip-num">${num}</span><span class="chip-code">${team.code}</span>`+(cnt>=2?`<span class="rep-badge">${cnt}</span>`:'');
       if(cnt>=1)have++;
     });
     const pct=Math.round(have/team.stickers.length*100);
     const pf=document.getElementById('pf-'+team.code);const pt=document.getElementById('pt-'+team.code);
-    if(pf)pf.style.width=pct+'%';
-    if(pt)pt.textContent=`${have}/${team.stickers.length} · ${pct}%`;
+    if(pf)pf.style.width=pct+'%';if(pt)pt.textContent=`${have}/${team.stickers.length} · ${pct}%`;
   });
 }
-
 function updateGlobalProgress(){
   const u=me();if(!u)return;
   const have=Object.values(u.have||{}).filter(v=>v>=1).length;
-  const pct=Math.round(have/TOTAL_STICKERS*100);
+  const pct=Math.round(have/TOTAL*100);
   document.getElementById('globalPct').textContent=pct+'%';
   document.getElementById('globalSub').textContent=`${have} Cromos`;
   document.getElementById('globalFill').style.width=pct+'%';
 }
-
 window.toggleTeam=function(code){
-  const body=document.getElementById('tb-'+code);
-  const tog=document.getElementById('tt-'+code);
-  const open=body.classList.toggle('open');
-  tog.classList.toggle('open',open);
+  const body=document.getElementById('tb-'+code);const tog=document.getElementById('tt-'+code);
+  const open=body.classList.toggle('open');tog.classList.toggle('open',open);
 };
 window.filterTeams=function(q){
   const ql=q.toLowerCase();
-  document.querySelectorAll('.team-block').forEach(b=>{
-    b.style.display=(b.dataset.code.toLowerCase().includes(ql)||b.dataset.name.includes(ql))?'':'none';
-  });
+  document.querySelectorAll('.team-block').forEach(b=>{b.style.display=(b.dataset.code.toLowerCase().includes(ql)||b.dataset.name.includes(ql))?'':'none';});
 };
-
 let saveTimer=null;
 async function chipClick(k){
   const u=me();if(!u)return;
@@ -546,12 +428,7 @@ async function chipClick(k){
   u.have[k]=(u.have[k]||0)+1;
   const cnt=u.have[k];
   const el=document.getElementById(chipId(k));
-  if(el){
-    const num=k.includes(' ')?k.split(' ')[1]:k;
-    const code=k.split(' ')[0];
-    el.className='chip have'+(cnt>=2?' rep':'');
-    el.innerHTML=`<span class="chip-num">${num}</span><span class="chip-code">${code}</span>`+(cnt>=2?`<span class="rep-badge">${cnt}</span>`:'');
-  }
+  if(el){const num=k.includes(' ')?k.split(' ')[1]:k;const code=k.split(' ')[0];el.className='chip have'+(cnt>=2?' rep':'');el.innerHTML=`<span class="chip-num">${num}</span><span class="chip-code">${code}</span>`+(cnt>=2?`<span class="rep-badge">${cnt}</span>`:'');}
   updateTeamProg(k,u);updateGlobalProgress();
   clearTimeout(saveTimer);saveTimer=setTimeout(async()=>{await saveUser(u);toast('✓ Guardado');},600);
 }
@@ -560,25 +437,17 @@ async function chipRight(k){
   u.have[k]--;if(u.have[k]<=0)delete u.have[k];
   const cnt=u.have[k]||0;
   const el=document.getElementById(chipId(k));
-  if(el){
-    const num=k.includes(' ')?k.split(' ')[1]:k;
-    const code=k.split(' ')[0];
-    el.className='chip'+(cnt>=1?' have':'')+(cnt>=2?' rep':'');
-    el.innerHTML=`<span class="chip-num">${num}</span><span class="chip-code">${code}</span>`+(cnt>=2?`<span class="rep-badge">${cnt}</span>`:'');
-  }
+  if(el){const num=k.includes(' ')?k.split(' ')[1]:k;const code=k.split(' ')[0];el.className='chip'+(cnt>=1?' have':'')+(cnt>=2?' rep':'');el.innerHTML=`<span class="chip-num">${num}</span><span class="chip-code">${code}</span>`+(cnt>=2?`<span class="rep-badge">${cnt}</span>`:'');}
   updateTeamProg(k,u);updateGlobalProgress();
   clearTimeout(saveTimer);saveTimer=setTimeout(async()=>{await saveUser(u);toast('✓ Guardado');},600);
 }
 function updateTeamProg(k,u){
-  const code=k.split(' ')[0];
-  const team=TEAMS.find(t=>t.code===code);if(!team)return;
+  const code=k.split(' ')[0];const team=TEAMS.find(t=>t.code===code);if(!team)return;
   const have=team.stickers.filter(s=>getCount(u,s)>=1).length;
   const pct=Math.round(have/team.stickers.length*100);
   const pf=document.getElementById('pf-'+code);const pt=document.getElementById('pt-'+code);
-  if(pf)pf.style.width=pct+'%';
-  if(pt)pt.textContent=`${have}/${team.stickers.length} · ${pct}%`;
+  if(pf)pf.style.width=pct+'%';if(pt)pt.textContent=`${have}/${team.stickers.length} · ${pct}%`;
 }
-
 function totalHave(u){return Object.values(u.have||{}).filter(v=>v>=1).length;}
 function totalRep(u){return Object.values(u.have||{}).filter(v=>v>=2).length;}
 function countTrocas(uid){
@@ -590,19 +459,15 @@ function countTrocas(uid){
     return ag.length||bg.length;
   }).length;
 }
-
 function renderGrupo(){
   const el=document.getElementById('grupoContent');if(!el)return;
   el.innerHTML=state.users.map(u=>{
     const isMe=u.id===state.currentUserId;
-    const pct=Math.round(totalHave(u)/TOTAL_STICKERS*100);
+    const pct=Math.round(totalHave(u)/TOTAL*100);
     return`<div class="gcard${isMe?' me':''}">
       <div class="gcard-top">
         <div style="${avS(u.color,46)}">${initials(u.name)}</div>
-        <div style="flex:1;">
-          <div class="gcard-name">${u.name}${isMe?'<span class="me-tag">(tu)</span>':''}</div>
-          <div class="gcard-sub">${pct}% completo</div>
-        </div>
+        <div style="flex:1;"><div class="gcard-name">${u.name}${isMe?'<span class="me-tag">(tu)</span>':''}</div><div class="gcard-sub">${pct}% completo</div></div>
         ${isMe?`<button class="btn-sm" onclick="confirmRemoveMe()" style="color:var(--red);border-color:var(--red);">🗑 Sair</button>`:''}
       </div>
       <div class="gstats">
@@ -614,10 +479,8 @@ function renderGrupo(){
   }).join('')||'<div class="empty"><span>👥</span>Ainda ninguém no grupo.</div>';
 }
 window.confirmRemoveMe=async function(){if(!confirm('Apagar os teus dados?'))return;await delUser(state.currentUserId);logout();};
-
 function renderTrocas(){
-  const ff=document.getElementById('trocaFilters');
-  const el=document.getElementById('trocasContent');
+  const ff=document.getElementById('trocaFilters');const el=document.getElementById('trocasContent');
   ff.innerHTML=`<button class="fb ${state.trocaFilter==='todas'?'active':''}" data-f="todas">Todas</button>`+state.users.map(u=>`<button class="fb ${state.trocaFilter===u.id?'active':''}" data-f="${u.id}">${u.name}</button>`).join('');
   ff.querySelectorAll('.fb').forEach(b=>b.addEventListener('click',()=>{state.trocaFilter=b.dataset.f;renderTrocas();}));
   let pairs=[];
@@ -634,44 +497,17 @@ function renderTrocas(){
   el.innerHTML=pairs.map(({a,b,ag,bg})=>{
     const mutual=ag.length>0&&bg.length>0;
     const tl=(list,u)=>list.length?list.sort().map(k=>`<span class="ctag">${k}<span class="qb">×${repCount(u,k)}</span></span>`).join(''):'<span style="font-size:12px;color:var(--muted);">—</span>';
-    return`<div class="tcard">
-      <div class="thead">
-        <div style="${avS(a.color,32)}">${initials(a.name)}</div>
-        <span class="tname">${a.name}</span>
-        <span style="color:var(--muted);">⇄</span>
-        <div style="${avS(b.color,32)}">${initials(b.name)}</div>
-        <span class="tname">${b.name}</span>
-        ${mutual?'<span class="badge-m" style="margin-left:auto;">✓ Mútua</span>':'<span class="badge-p" style="margin-left:auto;">Parcial</span>'}
-      </div>
-      <div class="tbody">
-        <div><div class="tcolt">${a.name} pode dar</div><div style="display:flex;flex-wrap:wrap;">${tl(ag,a)}</div></div>
-        <div style="text-align:center;padding-top:10px;color:var(--muted);">⇄</div>
-        <div><div class="tcolt">${b.name} pode dar</div><div style="display:flex;flex-wrap:wrap;">${tl(bg,b)}</div></div>
-      </div>
-    </div>`;
+    return`<div class="tcard"><div class="thead"><div style="${avS(a.color,32)}">${initials(a.name)}</div><span class="tname">${a.name}</span><span style="color:var(--muted);">⇄</span><div style="${avS(b.color,32)}">${initials(b.name)}</div><span class="tname">${b.name}</span>${mutual?'<span class="badge-m" style="margin-left:auto;">✓ Mútua</span>':'<span class="badge-p" style="margin-left:auto;">Parcial</span>'}</div><div class="tbody"><div><div class="tcolt">${a.name} pode dar</div><div style="display:flex;flex-wrap:wrap;">${tl(ag,a)}</div></div><div style="text-align:center;padding-top:10px;color:var(--muted);">⇄</div><div><div class="tcolt">${b.name} pode dar</div><div style="display:flex;flex-wrap:wrap;">${tl(bg,b)}</div></div></div></div>`;
   }).join('');
 }
-
 function renderRegistar(){
   const el=document.getElementById('registarContent');if(!el)return;
   const u=me();if(!u)return;
   const others=state.users.filter(o=>o.id!==state.currentUserId);
-  const logHTML=state.log.length===0?'<div class="empty" style="padding:1rem 0;"><span>📜</span>Ainda sem trocas registadas.</div>':state.log.slice(0,30).map(t=>`<div class="log-e"><strong>${t.aN}</strong> deu <span class="m">${t.ag}</span> ⇄ <strong>${t.bN}</strong> deu <span class="m">${t.bg}</span><div style="margin-top:3px;font-size:11px;">${new Date(t.ts).toLocaleString('pt-PT')}</div></div>`).join('');
-  const formHTML=!others.length?'<p style="font-size:13px;color:var(--muted);">Ainda não há outros membros.</p>':`
-    <div class="rffull"><label>Com quem trocaste?</label><select id="tP"><option value="">— Seleciona —</option>${others.map(o=>`<option value="${o.id}">${o.name}</option>`).join('')}</select></div>
-    <div class="rform">
-      <div class="rf"><label>Tu deste</label><select id="tG"><option value="">—</option></select></div>
-      <div class="rarrow">⇄</div>
-      <div class="rf"><label>Tu recebeste</label><select id="tR"><option value="">—</option></select></div>
-    </div>
-    <button class="btn-main" id="btnReg">✅ Confirmar troca</button>`;
-  el.innerHTML=`
-    <div class="rcard"><div class="rtitle">✅ Registar troca</div><div class="rhint">As cadernetas de ambos atualizam automaticamente ao confirmar.</div>${formHTML}</div>
-    <div class="rcard"><div class="rtitle" style="margin-bottom:12px;">📜 Histórico</div>${logHTML}</div>`;
-  if(others.length){
-    document.getElementById('tP').addEventListener('change',updateTrocaSelects);
-    document.getElementById('btnReg').addEventListener('click',registarTroca);
-  }
+  const logHTML=state.log.length===0?'<div class="empty" style="padding:1rem 0;"><span>📜</span>Ainda sem trocas.</div>':state.log.slice(0,30).map(t=>`<div class="log-e"><strong>${t.aN}</strong> deu <span class="m">${t.ag}</span> ⇄ <strong>${t.bN}</strong> deu <span class="m">${t.bg}</span><div style="margin-top:3px;font-size:11px;">${new Date(t.ts).toLocaleString('pt-PT')}</div></div>`).join('');
+  const formHTML=!others.length?'<p style="font-size:13px;color:var(--muted);">Ainda não há outros membros.</p>':`<div class="rffull"><label>Com quem trocaste?</label><select id="tP"><option value="">— Seleciona —</option>${others.map(o=>`<option value="${o.id}">${o.name}</option>`).join('')}</select></div><div class="rform"><div class="rf"><label>Tu deste</label><select id="tG"><option value="">—</option></select></div><div class="rarrow">⇄</div><div class="rf"><label>Tu recebeste</label><select id="tR"><option value="">—</option></select></div></div><button class="btn-main" id="btnReg">✅ Confirmar troca</button>`;
+  el.innerHTML=`<div class="rcard"><div class="rtitle">✅ Registar troca</div><div class="rhint">As cadernetas de ambos atualizam automaticamente ao confirmar.</div>${formHTML}</div><div class="rcard"><div class="rtitle" style="margin-bottom:12px;">📜 Histórico</div>${logHTML}</div>`;
+  if(others.length){document.getElementById('tP').addEventListener('change',updateTrocaSelects);document.getElementById('btnReg').addEventListener('click',registarTroca);}
 }
 function updateTrocaSelects(){
   const pid=document.getElementById('tP').value;const partner=getUser(pid);const u=me();
@@ -695,7 +531,6 @@ async function registarTroca(){
   await Promise.all([saveUser(u),saveUser(partner),saveLog(entry)]);
   toast('✅ Troca registada!');refreshAlbumChips();updateGlobalProgress();
 }
-
 boot();
 </script>
 </body>

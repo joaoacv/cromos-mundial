@@ -177,7 +177,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Inter'
           <div class="leg"><div class="leg-chip empty">—</div>Não tens</div>
           <div class="leg"><div class="leg-chip have">✓</div>Tens</div>
           <div class="leg"><div class="leg-chip rep">×2</div>Repetido</div>
-          <span style="font-size:11px;color:var(--muted2);">Clique = tens &nbsp;·&nbsp; +clique = repetido &nbsp;·&nbsp; botão direito = remover</span>
+          <span style="font-size:11px;color:var(--muted2);">Clique = tens &nbsp;·&nbsp; +clique = repetido &nbsp;·&nbsp; pressão longa = remover</span>
         </div>
         <div class="album-content" id="albumGrid"></div>
       </div>
@@ -389,6 +389,11 @@ function buildAlbum(){
     </div>`).join('');
   grid.addEventListener('click',e=>{const c=e.target.closest('.chip');if(c)chipClick(c.dataset.key);});
   grid.addEventListener('contextmenu',e=>{const c=e.target.closest('.chip');if(c){e.preventDefault();chipRight(c.dataset.key);}});
+  // long press to remove (mobile)
+  let lpTimer=null;
+  grid.addEventListener('touchstart',e=>{const c=e.target.closest('.chip');if(!c)return;lpTimer=setTimeout(()=>{lpTimer=null;navigator.vibrate&&navigator.vibrate(40);chipRight(c.dataset.key);toast('✕ Removido');},600);},{passive:true});
+  grid.addEventListener('touchend',()=>{clearTimeout(lpTimer);lpTimer=null;},{passive:true});
+  grid.addEventListener('touchmove',()=>{clearTimeout(lpTimer);lpTimer=null;},{passive:true});
   refreshAlbumChips();updateGlobalProgress();
 }
 function refreshAlbumChips(){

@@ -114,6 +114,9 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Inter'
 .log-e strong{color:var(--text);}
 .log-e .m{color:var(--gold);font-weight:700;font-family:monospace;font-size:13px;}
 .empty{text-align:center;padding:3rem 1rem;color:var(--muted);font-size:14px;line-height:1.8;}
+.qreg-btn{display:inline-flex;align-items:center;padding:6px 12px;background:rgba(76,175,80,.1);border:1px solid rgba(76,175,80,.35);border-radius:8px;cursor:pointer;font-family:'Inter',sans-serif;font-size:12px;color:var(--text);transition:all .15s;}
+.qreg-btn:hover{background:rgba(76,175,80,.25);border-color:var(--green);}
+.qreg-btn:active{transform:scale(.95);}
 .empty span{font-size:40px;display:block;margin-bottom:10px;}
 #toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--surface);border:1px solid var(--border);color:var(--text);padding:10px 20px;border-radius:99px;font-size:13px;font-weight:600;opacity:0;transition:all .25s;z-index:999;pointer-events:none;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,.5);}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
@@ -494,11 +497,73 @@ function renderTrocas(){
   }
   if(state.trocaFilter!=='todas')pairs=pairs.filter(p=>p.a.id===state.trocaFilter||p.b.id===state.trocaFilter);
   if(!pairs.length){el.innerHTML=`<div class="empty"><span>${state.users.length<2?'👥':'🤝'}</span>${state.users.length<2?'Adiciona pelo menos 2 membros.':'Ainda não há trocas possíveis.'}</div>`;return;}
+
   el.innerHTML=pairs.map(({a,b,ag,bg})=>{
     const mutual=ag.length>0&&bg.length>0;
     const tl=(list,u)=>list.length?list.sort().map(k=>`<span class="ctag">${k}<span class="qb">×${repCount(u,k)}</span></span>`).join(''):'<span style="font-size:12px;color:var(--muted);">—</span>';
-    return`<div class="tcard"><div class="thead"><div style="${avS(a.color,32)}">${initials(a.name)}</div><span class="tname">${a.name}</span><span style="color:var(--muted);">⇄</span><div style="${avS(b.color,32)}">${initials(b.name)}</div><span class="tname">${b.name}</span>${mutual?'<span class="badge-m" style="margin-left:auto;">✓ Mútua</span>':'<span class="badge-p" style="margin-left:auto;">Parcial</span>'}</div><div class="tbody"><div><div class="tcolt">${a.name} pode dar</div><div style="display:flex;flex-wrap:wrap;">${tl(ag,a)}</div></div><div style="text-align:center;padding-top:10px;color:var(--muted);">⇄</div><div><div class="tcolt">${b.name} pode dar</div><div style="display:flex;flex-wrap:wrap;">${tl(bg,b)}</div></div></div></div>`;
+
+    // build quick-register combos: for each (aGive, bGive) pair, show a register button
+    // only show quick buttons if both sides have something (mutual), otherwise show all combos
+    let quickBtns='';
+    if(mutual){
+      // all combos of aGive x bGive
+      const combos=[];
+      ag.slice(0,3).forEach(give=>{bg.slice(0,3).forEach(get=>{combos.push({give,get});});});
+      quickBtns=`<div style="margin-top:10px;border-top:1px solid var(--border);padding-top:10px;">
+        <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:600;margin-bottom:6px;">Registar troca rápida</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;">
+          ${combos.map(({give,get})=>`<button class="qreg-btn" data-aid="${a.id}" data-bid="${b.id}" data-give="${give}" data-get="${get}">
+            <span style="color:var(--green);font-weight:700;">${give}</span>
+            <span style="color:var(--muted);margin:0 4px;">⇄</span>
+            <span style="color:var(--green);font-weight:700;">${get}</span>
+            <span style="margin-left:6px;font-size:10px;">✓</span>
+          </button>`).join('')}
+        </div>
+      </div>`;
+    } else {
+      // one-sided: show the available stickers as registerable
+      const oneSide = ag.length>0
+        ? ag.slice(0,6).map(give=>`<button class="qreg-btn" data-aid="${a.id}" data-bid="${b.id}" data-give="${give}" data-get="">
+            <span style="color:var(--green);font-weight:700;">${a.name.split(' ')[0]} dá ${give}</span>
+            <span style="margin-left:6px;font-size:10px;">✓</span>
+          </button>`)
+        : bg.slice(0,6).map(get=>`<button class="qreg-btn" data-aid="${a.id}" data-bid="${b.id}" data-give="" data-get="${get}">
+            <span style="color:var(--green);font-weight:700;">${b.name.split(' ')[0]} dá ${get}</span>
+            <span style="margin-left:6px;font-size:10px;">✓</span>
+          </button>`);
+      quickBtns=`<div style="margin-top:10px;border-top:1px solid var(--border);padding-top:10px;">
+        <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:600;margin-bottom:6px;">Registar troca</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;">${oneSide.join('')}</div>
+      </div>`;
+    }
+
+    return`<div class="tcard">
+      <div class="thead">
+        <div style="${avS(a.color,32)}">${initials(a.name)}</div>
+        <span class="tname">${a.name}</span>
+        <span style="color:var(--muted);">⇄</span>
+        <div style="${avS(b.color,32)}">${initials(b.name)}</div>
+        <span class="tname">${b.name}</span>
+        ${mutual?'<span class="badge-m" style="margin-left:auto;">✓ Mútua</span>':'<span class="badge-p" style="margin-left:auto;">Parcial</span>'}
+      </div>
+      <div class="tbody">
+        <div><div class="tcolt">${a.name} pode dar</div><div style="display:flex;flex-wrap:wrap;">${tl(ag,a)}</div></div>
+        <div style="text-align:center;padding-top:10px;color:var(--muted);">⇄</div>
+        <div><div class="tcolt">${b.name} pode dar</div><div style="display:flex;flex-wrap:wrap;">${tl(bg,b)}</div></div>
+      </div>
+      ${quickBtns}
+    </div>`;
   }).join('');
+
+  // attach quick register button events
+  el.querySelectorAll('.qreg-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const aid=btn.dataset.aid,bid=btn.dataset.bid;
+      const give=btn.dataset.give,get=btn.dataset.get;
+      if(!give||!get){toast('⚠️ Seleciona um cromo de cada lado');return;}
+      registarTrocaDireta(aid,bid,give,get);
+    });
+  });
 }
 function renderRegistar(){
   const el=document.getElementById('registarContent');if(!el)return;
@@ -521,15 +586,23 @@ function updateTrocaSelects(){
 async function registarTroca(){
   const pid=document.getElementById('tP').value;const ig=document.getElementById('tG').value;const ir=document.getElementById('tR').value;
   if(!pid||!ig||!ir){alert('Preenche todos os campos!');return;}
-  const u=me();const partner=getUser(pid);
-  u.have[ig]=(u.have[ig]||1)-1;if(u.have[ig]<=0)delete u.have[ig];
-  u.have[ir]=(u.have[ir]||0)+1;
-  if(!partner.have)partner.have={};
-  partner.have[ir]=(partner.have[ir]||1)-1;if(partner.have[ir]<=0)delete partner.have[ir];
-  partner.have[ig]=(partner.have[ig]||0)+1;
-  const entry={id:uid(),ts:Date.now(),aN:u.name,ag:ig,bN:partner.name,bg:ir};
-  await Promise.all([saveUser(u),saveUser(partner),saveLog(entry)]);
-  toast('✅ Troca registada!');refreshAlbumChips();updateGlobalProgress();
+  await registarTrocaDireta(state.currentUserId,pid,ig,ir);
+}
+
+async function registarTrocaDireta(aid,bid,give,get){
+  const a=getUser(aid);const b=getUser(bid);
+  if(!a||!b)return;
+  // a gives 'give', b gives 'get'
+  a.have[give]=(a.have[give]||1)-1;if(a.have[give]<=0)delete a.have[give];
+  a.have[get]=(a.have[get]||0)+1;
+  if(!b.have)b.have={};
+  b.have[get]=(b.have[get]||1)-1;if(b.have[get]<=0)delete b.have[get];
+  b.have[give]=(b.have[give]||0)+1;
+  const entry={id:uid(),ts:Date.now(),aN:a.name,ag:give,bN:b.name,bg:get};
+  await Promise.all([saveUser(a),saveUser(b),saveLog(entry)]);
+  toast('✅ Troca registada!');
+  refreshAlbumChips();updateGlobalProgress();
+  renderTrocas();
 }
 boot();
 </script>

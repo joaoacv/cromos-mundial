@@ -117,6 +117,10 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Inter'
 .qreg-btn{display:inline-flex;align-items:center;padding:6px 12px;background:rgba(76,175,80,.1);border:1px solid rgba(76,175,80,.35);border-radius:8px;cursor:pointer;font-family:'Inter',sans-serif;font-size:12px;color:var(--text);transition:all .15s;}
 .qreg-btn:hover{background:rgba(76,175,80,.25);border-color:var(--green);}
 .qreg-btn:active{transform:scale(.95);}
+.sel-chip{display:inline-flex;align-items:center;justify-content:center;padding:5px 9px;border-radius:8px;font-family:'Inter',monospace;font-size:11px;font-weight:700;cursor:pointer;border:1px solid var(--border);background:var(--surface2);color:var(--muted);transition:all .12s;-webkit-tap-highlight-color:transparent;}
+.sel-chip:active{transform:scale(.9);}
+.sel-chip.on{background:rgba(76,175,80,.2);border-color:var(--green);color:var(--green);}
+button.btn-main:disabled{cursor:not-allowed;}
 .empty span{font-size:40px;display:block;margin-bottom:10px;}
 #toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--surface);border:1px solid var(--border);color:var(--text);padding:10px 20px;border-radius:99px;font-size:13px;font-weight:600;opacity:0;transition:all .25s;z-index:999;pointer-events:none;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,.5);}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
@@ -570,44 +574,146 @@ function renderTrocas(){
     });
   });
 }
+// ── REGISTAR STATE ─────────────────────────────────────
+let regState={partner:'',giving:[],getting:[]};
+
 function renderRegistar(){
   const el=document.getElementById('registarContent');if(!el)return;
   const u=me();if(!u)return;
+
+  const logHTML=state.log.length===0
+    ?'<div class="empty" style="padding:1rem 0;"><span>📜</span>Ainda sem trocas.</div>'
+    :state.log.slice(0,40).map(t=>`<div class="log-e">
+        <strong>${t.aN}</strong> deu <span class="m">${Array.isArray(t.ag)?t.ag.join(', '):t.ag}</span>
+        ⇄ ${t.bN?`<strong>${t.bN}</strong> deu <span class="m">${Array.isArray(t.bg)?t.bg.join(', '):t.bg}</span>`:'<span style="color:var(--muted);">troca externa</span>'}
+        <div style="margin-top:3px;font-size:11px;">${new Date(t.ts).toLocaleString('pt-PT')}</div>
+      </div>`).join('');
+
   const others=state.users.filter(o=>o.id!==state.currentUserId);
-  const logHTML=state.log.length===0?'<div class="empty" style="padding:1rem 0;"><span>📜</span>Ainda sem trocas.</div>':state.log.slice(0,30).map(t=>`<div class="log-e"><strong>${t.aN}</strong> deu <span class="m">${t.ag}</span> ⇄ <strong>${t.bN}</strong> deu <span class="m">${t.bg}</span><div style="margin-top:3px;font-size:11px;">${new Date(t.ts).toLocaleString('pt-PT')}</div></div>`).join('');
-  const formHTML=!others.length?'<p style="font-size:13px;color:var(--muted);">Ainda não há outros membros.</p>':`<div class="rffull"><label>Com quem trocaste?</label><select id="tP"><option value="">— Seleciona —</option>${others.map(o=>`<option value="${o.id}">${o.name}</option>`).join('')}</select></div><div class="rform"><div class="rf"><label>Tu deste</label><select id="tG"><option value="">—</option></select></div><div class="rarrow">⇄</div><div class="rf"><label>Tu recebeste</label><select id="tR"><option value="">—</option></select></div></div><button class="btn-main" id="btnReg">✅ Confirmar troca</button>`;
-  el.innerHTML=`<div class="rcard"><div class="rtitle">✅ Registar troca</div><div class="rhint">As cadernetas de ambos atualizam automaticamente ao confirmar.</div>${formHTML}</div><div class="rcard"><div class="rtitle" style="margin-bottom:12px;">📜 Histórico</div>${logHTML}</div>`;
-  if(others.length){document.getElementById('tP').addEventListener('change',updateTrocaSelects);document.getElementById('btnReg').addEventListener('click',registarTroca);}
+  const partnerOpts=`<option value="__ext__">👤 Alguém fora da app</option>`+others.map(o=>`<option value="${o.id}" ${regState.partner===o.id?'selected':''}>${o.name}</option>`).join('');
+
+  // chips for "I gave" — my reps
+  const myReps=Object.keys(u.have||{}).filter(k=>repCount(u,k)>0).sort();
+  // chips for "I got" — depends on partner
+  const partner=getUser(regState.partner);
+  let canGet=[];
+  if(partner){canGet=Object.keys(partner.have||{}).filter(k=>repCount(partner,k)>0&&needsSticker(u,k)).sort();}
+  else{
+    // external: show all stickers I don't have yet
+    canGet=TEAMS.flatMap(t=>t.stickers).filter(k=>needsSticker(u,k)).sort();
+  }
+
+  function chipGrid(list,selected,toggleFn,emptyMsg){
+    if(!list.length)return`<div style="font-size:12px;color:var(--muted);padding:6px 0;">${emptyMsg}</div>`;
+    return`<div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:6px;">`+list.map(k=>{
+      const on=selected.includes(k);
+      return`<button class="sel-chip${on?' on':''}" data-k="${k}" onclick="${toggleFn}('${k}')">${k}</button>`;
+    }).join('')+`</div>`;
+  }
+
+  const givingGrid=chipGrid(myReps,regState.giving,'toggleGive','Não tens repetidos de momento.');
+  const gettingGrid=chipGrid(canGet,regState.getting,'toggleGet',regState.partner?'Não há cromos possíveis.':'Nenhum cromo em falta.');
+
+  const summary=()=>{
+    const g=regState.giving.length,r=regState.getting.length;
+    if(!g&&!r)return'';
+    return`<div style="background:rgba(76,175,80,.08);border:1px solid rgba(76,175,80,.25);border-radius:10px;padding:10px 12px;margin-bottom:12px;font-size:12px;">
+      ${g?`<div style="margin-bottom:4px;"><span style="color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.06em;">Dás (${g})</span><br><span style="color:var(--gold);font-weight:700;">${regState.giving.join(' · ')}</span></div>`:''}
+      ${r?`<div><span style="color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.06em;">Recebes (${r})</span><br><span style="color:var(--green);font-weight:700;">${regState.getting.join(' · ')}</span></div>`:''}
+    </div>`;
+  };
+
+  el.innerHTML=`
+    <div class="rcard">
+      <div class="rtitle">✅ Registar troca</div>
+      <div class="rhint">Seleciona vários cromos de uma vez. Podes trocar com alguém fora da app.</div>
+
+      <div class="rffull">
+        <label>Com quem trocaste?</label>
+        <select id="tPartner" onchange="onPartnerChange(this.value)">
+          <option value="">— Seleciona —</option>
+          ${partnerOpts}
+        </select>
+      </div>
+
+      ${regState.partner!==''?`
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+        <div>
+          <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:700;margin-bottom:2px;">Tu deste ${regState.giving.length?`<span style="color:var(--gold);">(${regState.giving.length})</span>`:''}</div>
+          <div style="font-size:11px;color:var(--muted2);margin-bottom:4px;">Os teus repetidos</div>
+          <div style="max-height:180px;overflow-y:auto;">${givingGrid}</div>
+        </div>
+        <div>
+          <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:700;margin-bottom:2px;">Tu recebeste ${regState.getting.length?`<span style="color:var(--green);">(${regState.getting.length})</span>`:''}</div>
+          <div style="font-size:11px;color:var(--muted2);margin-bottom:4px;">${partner?'Repetidos do parceiro':'Cromos que te faltam'}</div>
+          <div style="max-height:180px;overflow-y:auto;">${gettingGrid}</div>
+        </div>
+      </div>
+      ${summary()}
+      <button class="btn-main" id="btnReg" ${(!regState.giving.length&&!regState.getting.length)?'disabled style="opacity:.4;"':''}>✅ Confirmar troca</button>
+      `:''}
+    </div>
+    <div class="rcard"><div class="rtitle" style="margin-bottom:12px;">📜 Histórico</div>${logHTML}</div>`;
+
+  if(regState.partner!==''){
+    document.getElementById('btnReg').addEventListener('click',confirmarTroca);
+  }
 }
-function updateTrocaSelects(){
-  const pid=document.getElementById('tP').value;const partner=getUser(pid);const u=me();
-  const gs=document.getElementById('tG');const gr=document.getElementById('tR');
-  if(!partner){gs.innerHTML='<option>—</option>';gr.innerHTML='<option>—</option>';return;}
-  const cg=Object.keys(u.have||{}).filter(k=>repCount(u,k)>0&&needsSticker(partner,k)).sort();
-  const cr=Object.keys(partner.have||{}).filter(k=>repCount(partner,k)>0&&needsSticker(u,k)).sort();
-  gs.innerHTML='<option value="">— Seleciona —</option>'+cg.map(k=>`<option value="${k}">${k} (tens ×${repCount(u,k)})</option>`).join('');
-  gr.innerHTML='<option value="">— Seleciona —</option>'+cr.map(k=>`<option value="${k}">${k} (ele/ela tem ×${repCount(partner,k)})</option>`).join('');
-}
-async function registarTroca(){
-  const pid=document.getElementById('tP').value;const ig=document.getElementById('tG').value;const ir=document.getElementById('tR').value;
-  if(!pid||!ig||!ir){alert('Preenche todos os campos!');return;}
-  await registarTrocaDireta(state.currentUserId,pid,ig,ir);
+
+window.onPartnerChange=function(val){
+  regState.partner=val;regState.giving=[];regState.getting=[];
+  renderRegistar();
+};
+window.toggleGive=function(k){
+  const i=regState.giving.indexOf(k);
+  if(i>=0)regState.giving.splice(i,1);else regState.giving.push(k);
+  renderRegistar();
+};
+window.toggleGet=function(k){
+  const i=regState.getting.indexOf(k);
+  if(i>=0)regState.getting.splice(i,1);else regState.getting.push(k);
+  renderRegistar();
+};
+
+async function confirmarTroca(){
+  const u=me();if(!u)return;
+  if(!regState.giving.length&&!regState.getting.length){toast('⚠️ Seleciona pelo menos um cromo');return;}
+  const partner=getUser(regState.partner);
+
+  // update me
+  regState.giving.forEach(k=>{u.have[k]=(u.have[k]||1)-1;if(u.have[k]<=0)delete u.have[k];});
+  regState.getting.forEach(k=>{u.have[k]=(u.have[k]||0)+1;});
+
+  const saves=[saveUser(u)];
+
+  // update partner if in app
+  if(partner){
+    if(!partner.have)partner.have={};
+    regState.getting.forEach(k=>{partner.have[k]=(partner.have[k]||1)-1;if(partner.have[k]<=0)delete partner.have[k];});
+    regState.giving.forEach(k=>{partner.have[k]=(partner.have[k]||0)+1;});
+    saves.push(saveUser(partner));
+  }
+
+  const entry={id:uid(),ts:Date.now(),aN:u.name,ag:regState.giving.slice(),bN:partner?partner.name:'',bg:regState.getting.slice()};
+  saves.push(saveLog(entry));
+  await Promise.all(saves);
+
+  regState={partner:'',giving:[],getting:[]};
+  toast('✅ Troca registada!');
+  refreshAlbumChips();updateGlobalProgress();renderTrocas();renderRegistar();
 }
 
 async function registarTrocaDireta(aid,bid,give,get){
-  const a=getUser(aid);const b=getUser(bid);
-  if(!a||!b)return;
-  // a gives 'give', b gives 'get'
+  const a=getUser(aid);const b=getUser(bid);if(!a||!b)return;
   a.have[give]=(a.have[give]||1)-1;if(a.have[give]<=0)delete a.have[give];
   a.have[get]=(a.have[get]||0)+1;
   if(!b.have)b.have={};
   b.have[get]=(b.have[get]||1)-1;if(b.have[get]<=0)delete b.have[get];
   b.have[give]=(b.have[give]||0)+1;
-  const entry={id:uid(),ts:Date.now(),aN:a.name,ag:give,bN:b.name,bg:get};
+  const entry={id:uid(),ts:Date.now(),aN:a.name,ag:[give],bN:b.name,bg:[get]};
   await Promise.all([saveUser(a),saveUser(b),saveLog(entry)]);
   toast('✅ Troca registada!');
-  refreshAlbumChips();updateGlobalProgress();
-  renderTrocas();
+  refreshAlbumChips();updateGlobalProgress();renderTrocas();
 }
 boot();
 </script>

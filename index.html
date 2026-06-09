@@ -262,6 +262,10 @@ const TEAMS=[
   {code:"CC",   name:"Coca Cola",            stickers:["CC 1","CC 2","CC 3","CC 4","CC 5","CC 6","CC 7","CC 8","CC 9","CC 10","CC 11","CC 12","CC 13","CC 14"]},
 ];
 const TOTAL=TEAMS.reduce((s,t)=>s+t.stickers.length,0);
+// Build sticker order index for sorting by album order
+const STICKER_IDX={};
+let _si=0;TEAMS.forEach(t=>t.stickers.forEach(k=>{STICKER_IDX[k]=_si++;}));
+function sortByAlbum(arr){return arr.slice().sort((a,b)=>(STICKER_IDX[a]??9999)-(STICKER_IDX[b]??9999));}
 
 const COLORS=[{bg:'#1a2a4a',txt:'#6BA3E0',brd:'#2d4d8a'},{bg:'#2a1a4a',txt:'#A07AE0',brd:'#5a3a9a'},{bg:'#1a3a2a',txt:'#5ABD7A',brd:'#2a6a4a'},{bg:'#3a2a1a',txt:'#E0A050',brd:'#8a5a1a'},{bg:'#3a1a1a',txt:'#E07070',brd:'#9a3030'},{bg:'#1a3a3a',txt:'#50C0C0',brd:'#1a7a7a'},{bg:'#2a3a1a',txt:'#90C040',brd:'#4a7a1a'}];
 function uid(){return'_'+Math.random().toString(36).slice(2,10);}
@@ -307,7 +311,7 @@ function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t
 
 async function boot(){
   startListening();
-  const saved=sessionStorage.getItem('cromos_uid');
+  const saved=localStorage.getItem('cromos_uid');
   if(saved)state.currentUserId=saved;
   setTimeout(()=>{
     if(state.currentUserId&&state.users.find(u=>u.id===state.currentUserId)){enterApp();return;}
@@ -331,15 +335,15 @@ function renderLogin(){
 async function createAndJoin(){
   const name=(document.getElementById('fn').value||'').trim();if(!name)return;
   const user={id:uid(),name,color:0,have:{},created:Date.now()};
-  await saveUser(user);state.currentUserId=user.id;sessionStorage.setItem('cromos_uid',user.id);enterApp();
+  await saveUser(user);state.currentUserId=user.id;localStorage.setItem('cromos_uid',user.id);enterApp();
 }
 async function doLogin(){
   const sel=document.getElementById('ls').value;if(!sel)return;
   if(sel==='__new__'){
     const name=(document.getElementById('nln').value||'').trim();if(!name)return;
     const user={id:uid(),name,color:state.users.length,have:{},created:Date.now()};
-    await saveUser(user);state.currentUserId=user.id;sessionStorage.setItem('cromos_uid',user.id);
-  }else{state.currentUserId=sel;sessionStorage.setItem('cromos_uid',sel);}
+    await saveUser(user);state.currentUserId=user.id;localStorage.setItem('cromos_uid',user.id);
+  }else{state.currentUserId=sel;localStorage.setItem('cromos_uid',sel);}
   enterApp();
 }
 function enterApp(){
@@ -351,7 +355,7 @@ function enterApp(){
   buildAlbum();renderGrupo();renderTrocas();renderRegistar();
 }
 window.logout=function(){
-  state.currentUserId=null;sessionStorage.removeItem('cromos_uid');
+  state.currentUserId=null;localStorage.removeItem('cromos_uid');
   document.getElementById('loginScreen').style.display='flex';
   const as=document.getElementById('appScreen');as.style.display='none';as.classList.remove('show');
   renderLogin();
@@ -509,7 +513,7 @@ function renderTrocas(){
 
   el.innerHTML=pairs.map(({a,b,ag,bg})=>{
     const mutual=ag.length>0&&bg.length>0;
-    const tl=(list,u)=>list.length?list.sort().map(k=>`<span class="ctag">${k}<span class="qb">×${repCount(u,k)}</span></span>`).join(''):'<span style="font-size:12px;color:var(--muted);">—</span>';
+    const tl=(list,u)=>list.length?sortByAlbum(list).map(k=>`<span class="ctag">${k}<span class="qb">×${repCount(u,k)}</span></span>`).join(''):'<span style="font-size:12px;color:var(--muted);">—</span>';
 
     // build quick-register combos: for each (aGive, bGive) pair, show a register button
     // only show quick buttons if both sides have something (mutual), otherwise show all combos
@@ -593,14 +597,14 @@ function renderRegistar(){
   const partnerOpts=`<option value="__ext__">👤 Alguém fora da app</option>`+others.map(o=>`<option value="${o.id}" ${regState.partner===o.id?'selected':''}>${o.name}</option>`).join('');
 
   // chips for "I gave" — my reps
-  const myReps=Object.keys(u.have||{}).filter(k=>repCount(u,k)>0).sort();
+  const myReps=Object.keys(u.have||{}).filter(k=>repCount(u,k)>0);myReps.sort((a,b)=>(STICKER_IDX[a]??9999)-(STICKER_IDX[b]??9999));
   // chips for "I got" — depends on partner
   const partner=getUser(regState.partner);
   let canGet=[];
-  if(partner){canGet=Object.keys(partner.have||{}).filter(k=>repCount(partner,k)>0&&needsSticker(u,k)).sort();}
+  if(partner){canGet=Object.keys(partner.have||{}).filter(k=>repCount(partner,k)>0&&needsSticker(u,k));canGet.sort((a,b)=>(STICKER_IDX[a]??9999)-(STICKER_IDX[b]??9999));}
   else{
     // external: show all stickers I don't have yet
-    canGet=TEAMS.flatMap(t=>t.stickers).filter(k=>needsSticker(u,k)).sort();
+    canGet=TEAMS.flatMap(t=>t.stickers).filter(k=>needsSticker(u,k));canGet.sort((a,b)=>(STICKER_IDX[a]??9999)-(STICKER_IDX[b]??9999));
   }
 
   function chipGrid(list,selected,toggleFn,emptyMsg){

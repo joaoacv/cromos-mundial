@@ -283,6 +283,16 @@ async function saveUser(u){await setDoc(doc(db,'users',u.id),u);}
 async function delUser(id){await deleteDoc(doc(db,'users',id));}
 async function saveLog(e){await setDoc(doc(db,'log',e.id),e);}
 
+let booted=false;
+function afterFirstLoad(){
+  if(booted)return;
+  booted=true;
+  const saved=localStorage.getItem('cromos_uid');
+  if(saved)state.currentUserId=saved;
+  if(state.currentUserId&&state.users.find(u=>u.id===state.currentUserId)){enterApp();}
+  else{renderLogin();}
+}
+
 function startListening(){
   onSnapshot(collection(db,'users'),snap=>{
     snap.docChanges().forEach(ch=>{
@@ -293,6 +303,7 @@ function startListening(){
     state.users.sort((a,b)=>a.created-b.created);
     document.getElementById('dot').className='dot on';
     document.getElementById('stxt').textContent=`${state.users.length} online`;
+    afterFirstLoad();
     if(state.currentUserId)refreshAll();
   });
   onSnapshot(collection(db,'log'),snap=>{
@@ -311,12 +322,8 @@ function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t
 
 async function boot(){
   startListening();
-  const saved=localStorage.getItem('cromos_uid');
-  if(saved)state.currentUserId=saved;
-  setTimeout(()=>{
-    if(state.currentUserId&&state.users.find(u=>u.id===state.currentUserId)){enterApp();return;}
-    renderLogin();
-  },900);
+  // fallback: se Firebase demorar mais de 5s mostra login à mesma
+  setTimeout(()=>afterFirstLoad(),5000);
 }
 
 function renderLogin(){

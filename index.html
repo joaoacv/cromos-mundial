@@ -86,6 +86,14 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Inter'
 .gstat-n{font-size:20px;font-weight:900;}
 .gstat-l{font-size:10px;color:var(--muted);margin-top:2px;text-transform:uppercase;letter-spacing:.05em;}
 .me-tag{font-size:11px;color:var(--gold);font-weight:600;margin-left:4px;}
+.export-btn{display:inline-flex;align-items:center;gap:5px;padding:7px 12px;border:1px solid var(--border);border-radius:8px;background:transparent;color:var(--muted);font-family:'Inter',sans-serif;font-size:12px;font-weight:500;cursor:pointer;transition:all .15s;}
+.export-btn:hover{background:var(--surface2);color:var(--text);border-color:var(--muted);}
+.export-modal{position:fixed;inset:0;background:rgba(0,0,0,.7);display:flex;align-items:flex-end;justify-content:center;z-index:300;padding:0;}
+.export-box{background:var(--surface);border-radius:20px 20px 0 0;padding:20px 16px 32px;width:100%;max-width:520px;max-height:85vh;overflow-y:auto;}
+.export-box h3{font-size:16px;font-weight:800;margin-bottom:4px;}
+.export-box p{font-size:12px;color:var(--muted);margin-bottom:14px;}
+.export-textarea{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:'Inter',monospace;font-size:11px;padding:10px;resize:none;min-height:160px;line-height:1.6;}
+.export-close{position:absolute;top:16px;right:16px;background:none;border:none;color:var(--muted);font-size:22px;cursor:pointer;padding:4px 8px;}
 .frow{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;}
 .fb{padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:transparent;cursor:pointer;font-family:'Inter',sans-serif;font-size:12px;color:var(--muted);font-weight:500;}
 .fb.active{background:var(--gold);color:#000;border-color:var(--gold);font-weight:700;}
@@ -197,6 +205,23 @@ button.btn-main:disabled{cursor:not-allowed;}
     <button class="bnav" id="bnav-registar" onclick="switchTab('registar')"><span class="ico">✅</span>Registar</button>
   </nav>
 </div>
+
+<!-- EXPORT MODAL -->
+<div class="export-modal" id="exportModal" style="display:none;" onclick="closeExportIfBg(event)">
+  <div class="export-box" id="exportBox">
+    <button class="export-close" onclick="closeExport()">×</button>
+    <h3>📤 Exportar coleção</h3>
+    <p>Copia o texto abaixo para partilhar com alguém fora da app.</p>
+    <div style="display:flex;gap:8px;margin-bottom:10px;">
+      <button class="export-btn active" id="expTabFalta" onclick="switchExp('falta')" style="flex:1;justify-content:center;">❌ Faltam</button>
+      <button class="export-btn" id="expTabRep" onclick="switchExp('rep')" style="flex:1;justify-content:center;">🔁 Repetidos</button>
+      <button class="export-btn" id="expTabTudo" onclick="switchExp('tudo')" style="flex:1;justify-content:center;">📋 Tudo</button>
+    </div>
+    <textarea class="export-textarea" id="exportText" readonly onclick="this.select()"></textarea>
+    <button class="btn-main" style="margin-top:10px;" onclick="copyExport()">📋 Copiar</button>
+  </div>
+</div>
+
 <div id="toast"></div>
 
 <script type="module">
@@ -285,6 +310,7 @@ async function saveLog(e){await setDoc(doc(db,'log',e.id),e);}
 
 let booted=false;
 function afterFirstLoad(){
+  console.log('[afterFirstLoad] users:', state.users.length, 'saved:', localStorage.getItem('cromos_uid'));
   if(booted)return;
   booted=true;
   const saved=localStorage.getItem('cromos_uid');
@@ -301,6 +327,7 @@ function startListening(){
       else{const i=state.users.findIndex(u=>u.id===d.id);if(i>=0)state.users[i]=d;else state.users.push(d);}
     });
     state.users.sort((a,b)=>a.created-b.created);
+    console.log('[onSnapshot users] count:', state.users.length);
     document.getElementById('dot').className='dot on';
     document.getElementById('stxt').textContent=`${state.users.length} online`;
     afterFirstLoad();
@@ -321,9 +348,12 @@ let tt;
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),2000);}
 
 async function boot(){
+  console.log('[boot] starting, saved uid:', localStorage.getItem('cromos_uid'));
   startListening();
-  // fallback: se Firebase demorar mais de 5s mostra login à mesma
-  setTimeout(()=>afterFirstLoad(),5000);
+  setTimeout(()=>{
+    console.log('[fallback] users loaded:', state.users.length, 'currentUserId:', state.currentUserId);
+    afterFirstLoad();
+  },5000);
 }
 
 function renderLogin(){
@@ -491,7 +521,7 @@ function renderGrupo(){
       <div class="gcard-top">
         <div style="${avS(u.color,46)}">${initials(u.name)}</div>
         <div style="flex:1;"><div class="gcard-name">${u.name}${isMe?'<span class="me-tag">(tu)</span>':''}</div><div class="gcard-sub">${pct}% completo</div></div>
-        ${isMe?`<button class="btn-sm" onclick="confirmRemoveMe()" style="color:var(--red);border-color:var(--red);">🗑 Sair</button>`:''}
+        ${isMe?`<div style="display:flex;gap:6px;"><button class="export-btn" onclick="openExport()">📤 Exportar</button><button class="btn-sm" onclick="confirmRemoveMe()" style="color:var(--red);border-color:var(--red);">🗑 Sair</button></div>`:''}
       </div>
       <div class="gstats">
         <div class="gstat"><div class="gstat-n" style="color:var(--green);">${totalHave(u)}</div><div class="gstat-l">Tens</div></div>
@@ -726,6 +756,63 @@ async function registarTrocaDireta(aid,bid,give,get){
   toast('✅ Troca registada!');
   refreshAlbumChips();updateGlobalProgress();renderTrocas();
 }
+// ── EXPORT ─────────────────────────────────────────────
+let expMode='falta';
+window.openExport=function(){
+  expMode='falta';
+  updateExpButtons();
+  buildExportText();
+  document.getElementById('exportModal').style.display='flex';
+};
+window.closeExport=function(){document.getElementById('exportModal').style.display='none';};
+window.closeExportIfBg=function(e){if(e.target===document.getElementById('exportModal'))closeExport();};
+window.switchExp=function(mode){expMode=mode;updateExpButtons();buildExportText();};
+function updateExpButtons(){
+  ['falta','rep','tudo'].forEach(m=>{
+    const b=document.getElementById('expTab'+m.charAt(0).toUpperCase()+m.slice(1));
+    if(b)b.style.color=m===expMode?'var(--gold)':'';
+    if(b)b.style.borderColor=m===expMode?'var(--gold)':'';
+  });
+}
+function buildExportText(){
+  const u=me();if(!u)return;
+  const textarea=document.getElementById('exportText');
+  const date=new Date().toLocaleDateString('pt-PT');
+  let lines=[`Coleção de ${u.name} — ${date}`,``];
+
+  if(expMode==='falta'||expMode==='tudo'){
+    const missing=sortByAlbum(TEAMS.flatMap(t=>t.stickers).filter(k=>needsSticker(u,k)));
+    if(expMode==='tudo')lines.push(`❌ FALTAM (${missing.length})`);
+    // group by team
+    const groups={};
+    missing.forEach(k=>{const c=k.split(' ')[0];if(!groups[c])groups[c]=[];groups[c].push(k);});
+    Object.entries(groups).forEach(([code,stickers])=>{
+      const team=TEAMS.find(t=>t.code===code);
+      lines.push(`${code} (${team?team.name:code}): ${stickers.map(k=>k.split(' ')[1]||k).join(', ')}`);
+    });
+    lines.push(``);
+  }
+
+  if(expMode==='rep'||expMode==='tudo'){
+    const reps=sortByAlbum(Object.keys(u.have||{}).filter(k=>repCount(u,k)>0));
+    if(expMode==='tudo')lines.push(`🔁 REPETIDOS (${reps.length})`);
+    const groups={};
+    reps.forEach(k=>{const c=k.split(' ')[0];if(!groups[c])groups[c]=[];groups[c].push(`${k.split(' ')[1]||k}×${repCount(u,k)}`);});
+    Object.entries(groups).forEach(([code,stickers])=>{
+      const team=TEAMS.find(t=>t.code===code);
+      lines.push(`${code} (${team?team.name:code}): ${stickers.join(', ')}`);
+    });
+    lines.push(``);
+  }
+
+  textarea.value=lines.join('\n');
+}
+window.copyExport=function(){
+  const t=document.getElementById('exportText');
+  t.select();
+  navigator.clipboard?navigator.clipboard.writeText(t.value).then(()=>toast('✓ Copiado!')):document.execCommand('copy')&&toast('✓ Copiado!');
+};
+
 boot();
 </script>
 </body>
